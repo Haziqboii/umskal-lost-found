@@ -218,33 +218,403 @@ const DEFAULT_STATE = {
 
 let db = JSON.parse(JSON.stringify(DEFAULT_STATE));
 
+const { createClient } = require('@supabase/supabase-js');
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const useSupabase = !!(supabaseUrl && supabaseAnonKey);
+let supabase;
+
+if (useSupabase) {
+  supabase = createClient(supabaseUrl, supabaseAnonKey);
+  console.log("Supabase client initialized successfully.");
+} else {
+  console.log("Using in-memory database fallback (no Supabase credentials provided).");
+}
+
 function getFormattedTime() {
   const now = new Date();
   return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+const dbService = {
+  async getItems() {
+    if (useSupabase) {
+      const { data, error } = await supabase.from('verified_items').select('*');
+      if (error) console.error("Error fetching items from Supabase:", error);
+      return data || [];
+    }
+    return db.verifiedItems;
+  },
+  async addItem(item) {
+    if (useSupabase) {
+      const { error } = await supabase.from('verified_items').insert([item]);
+      if (error) console.error("Error inserting item into Supabase:", error);
+      return item;
+    }
+    db.verifiedItems.unshift(item);
+    return item;
+  },
+  async updateItemStatus(id, status) {
+    if (useSupabase) {
+      const { error } = await supabase.from('verified_items').update({ status }).eq('id', id);
+      if (error) console.error("Error updating item status in Supabase:", error);
+    } else {
+      const idx = db.verifiedItems.findIndex(i => i.id === id);
+      if (idx > -1) db.verifiedItems[idx].status = status;
+    }
+  },
+  async getLostReports() {
+    if (useSupabase) {
+      const { data, error } = await supabase.from('lost_reports').select('*');
+      if (error) console.error("Error fetching lost reports from Supabase:", error);
+      // Map snake_case to camelCase
+      return (data || []).map(r => ({
+        id: r.id,
+        name: r.name,
+        category: r.category,
+        location: r.location,
+        date: r.date,
+        time: r.time,
+        image: r.image,
+        status: r.status,
+        description: r.description,
+        matchedItemId: r.matched_item_id
+      }));
+    }
+    return db.lostReports;
+  },
+  async addLostReport(report) {
+    if (useSupabase) {
+      const { error } = await supabase.from('lost_reports').insert([{
+        id: report.id,
+        name: report.name,
+        category: report.category,
+        location: report.location,
+        date: report.date,
+        time: report.time,
+        image: report.image,
+        status: report.status,
+        description: report.description,
+        matched_item_id: report.matchedItemId
+      }]);
+      if (error) console.error("Error inserting lost report into Supabase:", error);
+      return report;
+    }
+    db.lostReports.unshift(report);
+    return report;
+  },
+  async updateLostReportMatch(id, status, matchedItemId) {
+    if (useSupabase) {
+      const { error } = await supabase.from('lost_reports').update({
+        status,
+        matched_item_id: matchedItemId
+      }).eq('id', id);
+      if (error) console.error("Error updating lost report match in Supabase:", error);
+    } else {
+      const idx = db.lostReports.findIndex(r => r.id === id);
+      if (idx > -1) {
+        db.lostReports[idx].status = status;
+        db.lostReports[idx].matchedItemId = matchedItemId;
+      }
+    }
+  },
+  async getFoundReports() {
+    if (useSupabase) {
+      const { data, error } = await supabase.from('found_reports').select('*');
+      if (error) console.error("Error fetching found reports from Supabase:", error);
+      return (data || []).map(r => ({
+        id: r.id,
+        name: r.name,
+        category: r.category,
+        location: r.location,
+        date: r.date,
+        time: r.time,
+        finderName: r.finder_name,
+        finderMatric: r.finder_matric,
+        finderEmail: r.finder_email,
+        description: r.description,
+        image: r.image,
+        status: r.status
+      }));
+    }
+    return db.foundReports;
+  },
+  async addFoundReport(report) {
+    if (useSupabase) {
+      const { error } = await supabase.from('found_reports').insert([{
+        id: report.id,
+        name: report.name,
+        category: report.category,
+        location: report.location,
+        date: report.date,
+        time: report.time,
+        finder_name: report.finderName,
+        finder_matric: report.finderMatric,
+        finder_email: report.finderEmail,
+        description: report.description,
+        image: report.image,
+        status: report.status
+      }]);
+      if (error) console.error("Error inserting found report into Supabase:", error);
+      return report;
+    }
+    db.foundReports.unshift(report);
+    return report;
+  },
+  async deleteFoundReport(id) {
+    if (useSupabase) {
+      const { error } = await supabase.from('found_reports').delete().eq('id', id);
+      if (error) console.error("Error deleting found report from Supabase:", error);
+    } else {
+      const idx = db.foundReports.findIndex(f => f.id === id);
+      if (idx > -1) db.foundReports.splice(idx, 1);
+    }
+  },
+  async updateFoundReportStatus(id, status) {
+    if (useSupabase) {
+      const { error } = await supabase.from('found_reports').update({ status }).eq('id', id);
+      if (error) console.error("Error updating found report status in Supabase:", error);
+    } else {
+      const idx = db.foundReports.findIndex(f => f.id === id);
+      if (idx > -1) db.foundReports[idx].status = status;
+    }
+  },
+  async getClaims() {
+    if (useSupabase) {
+      const { data, error } = await supabase.from('claims').select('*');
+      if (error) console.error("Error fetching claims from Supabase:", error);
+      return (data || []).map(c => ({
+        id: c.id,
+        itemId: c.item_id,
+        itemName: c.item_name,
+        itemRef: c.item_ref,
+        studentName: c.student_name,
+        studentMatric: c.student_matric,
+        studentEmail: c.student_email,
+        lostWhere: c.lost_where,
+        lostDate: c.lost_date,
+        lostTime: c.lost_time,
+        uniqueDetail: c.unique_detail,
+        proofImage: c.proof_image,
+        status: c.status,
+        adminNote: c.admin_note,
+        lostReportId: c.lost_report_id
+      }));
+    }
+    return db.claims;
+  },
+  async addClaim(claim) {
+    if (useSupabase) {
+      const { error } = await supabase.from('claims').insert([{
+        id: claim.id,
+        item_id: claim.itemId,
+        item_name: claim.itemName,
+        item_ref: claim.itemRef,
+        student_name: claim.studentName,
+        student_matric: claim.studentMatric,
+        student_email: claim.studentEmail,
+        lost_where: claim.lostWhere,
+        lost_date: claim.lostDate,
+        lost_time: claim.lostTime,
+        unique_detail: claim.uniqueDetail,
+        proof_image: claim.proofImage,
+        status: claim.status,
+        admin_note: claim.adminNote,
+        lost_report_id: claim.lostReportId
+      }]);
+      if (error) console.error("Error inserting claim into Supabase:", error);
+      return claim;
+    }
+    db.claims.unshift(claim);
+    return claim;
+  },
+  async updateClaimStatus(id, status, adminNote) {
+    if (useSupabase) {
+      const updateData = { status };
+      if (adminNote !== undefined) updateData.admin_note = adminNote;
+      const { error } = await supabase.from('claims').update(updateData).eq('id', id);
+      if (error) console.error("Error updating claim status in Supabase:", error);
+    } else {
+      const idx = db.claims.findIndex(c => c.id === id);
+      if (idx > -1) {
+        db.claims[idx].status = status;
+        if (adminNote !== undefined) db.claims[idx].adminNote = adminNote;
+      }
+    }
+  },
+  async getNotifications() {
+    if (useSupabase) {
+      const { data, error } = await supabase.from('notifications').select('*');
+      if (error) console.error("Error fetching notifications from Supabase:", error);
+      return data || [];
+    }
+    return db.notifications;
+  },
+  async addNotification(notif) {
+    if (useSupabase) {
+      const { error } = await supabase.from('notifications').insert([{
+        id: notif.id,
+        title: notif.title,
+        message: notif.message,
+        time: notif.time,
+        type: notif.type,
+        unread: notif.unread
+      }]);
+      if (error) console.error("Error inserting notification into Supabase:", error);
+      return notif;
+    }
+    db.notifications.unshift(notif);
+    return notif;
+  },
+  async markNotificationRead(id) {
+    if (useSupabase) {
+      const { error } = await supabase.from('notifications').update({ unread: false }).eq('id', id);
+      if (error) console.error("Error marking notification read in Supabase:", error);
+    } else {
+      const idx = db.notifications.findIndex(n => n.id === id);
+      if (idx > -1) db.notifications[idx].unread = false;
+    }
+  },
+  async markAllNotificationsRead() {
+    if (useSupabase) {
+      const { error } = await supabase.from('notifications').update({ unread: false }).neq('id', '');
+      if (error) console.error("Error marking all notifications read in Supabase:", error);
+    } else {
+      db.notifications.forEach(n => n.unread = false);
+    }
+  },
+  async getActivities() {
+    if (useSupabase) {
+      const { data, error } = await supabase.from('activities').select('*');
+      if (error) console.error("Error fetching activities from Supabase:", error);
+      return data || [];
+    }
+    return db.activities;
+  },
+  async addActivity(act) {
+    const actId = act.id || `AC-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    if (useSupabase) {
+      const { error } = await supabase.from('activities').insert([{
+        id: actId,
+        time: act.time,
+        text: act.text,
+        type: act.type,
+        ref: act.ref,
+        timestamp: act.timestamp
+      }]);
+      if (error) console.error("Error inserting activity into Supabase:", error);
+      return act;
+    }
+    db.activities.unshift(act);
+    return act;
+  },
+  async reset() {
+    if (useSupabase) {
+      try {
+        await supabase.from('claims').delete().neq('id', '');
+        await supabase.from('found_reports').delete().neq('id', '');
+        await supabase.from('lost_reports').delete().neq('id', '');
+        await supabase.from('verified_items').delete().neq('id', '');
+        await supabase.from('notifications').delete().neq('id', '');
+        await supabase.from('activities').delete().neq('id', '');
+
+        // Seed initial data
+        await supabase.from('verified_items').insert(DEFAULT_STATE.verifiedItems);
+        
+        await supabase.from('lost_reports').insert(DEFAULT_STATE.lostReports.map(r => ({
+          id: r.id,
+          name: r.name,
+          category: r.category,
+          location: r.location,
+          date: r.date,
+          time: r.time,
+          image: r.image,
+          status: r.status,
+          description: r.description,
+          matched_item_id: r.matchedItemId
+        })));
+
+        await supabase.from('found_reports').insert(DEFAULT_STATE.foundReports.map(r => ({
+          id: r.id,
+          name: r.name,
+          category: r.category,
+          location: r.location,
+          date: r.date,
+          time: r.time,
+          finder_name: r.finderName,
+          finder_matric: r.finderMatric,
+          finder_email: r.finderEmail,
+          description: r.description,
+          image: r.image,
+          status: r.status
+        })));
+
+        await supabase.from('claims').insert(DEFAULT_STATE.claims.map(c => ({
+          id: c.id,
+          item_id: c.itemId,
+          item_name: c.itemName,
+          item_ref: c.itemRef,
+          student_name: c.studentName,
+          student_matric: c.studentMatric,
+          student_email: c.studentEmail,
+          lost_where: c.lostWhere,
+          lost_date: c.lostDate,
+          lost_time: c.lostTime,
+          unique_detail: c.uniqueDetail,
+          proof_image: c.proofImage,
+          status: c.status
+        })));
+
+        await supabase.from('notifications').insert(DEFAULT_STATE.notifications.map(n => ({
+          id: n.id,
+          title: n.title,
+          message: n.message,
+          time: n.time,
+          type: n.type,
+          unread: n.unread
+        })));
+
+        await supabase.from('activities').insert(DEFAULT_STATE.activities.map((a, idx) => ({
+          id: `AC-SEED-${idx}`,
+          time: a.time,
+          text: a.text,
+          type: a.type,
+          ref: a.ref,
+          timestamp: a.timestamp
+        })));
+      } catch (err) {
+        console.error("Error resetting Supabase state:", err);
+      }
+    } else {
+      db = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    }
+  }
+};
+
 // ==========================================================================
 // REST API Endpoint Mappings
 // ==========================================================================
-app.get('/api/items', (req, res) => {
-  res.json(db.verifiedItems);
+app.get('/api/items', async (req, res) => {
+  const items = await dbService.getItems();
+  res.json(items);
 });
 
-app.post('/api/items', (req, res) => {
+app.post('/api/items', async (req, res) => {
   const item = req.body;
-  db.verifiedItems.unshift(item);
-  res.status(201).json(item);
+  const savedItem = await dbService.addItem(item);
+  res.status(201).json(savedItem);
 });
 
-app.get('/api/lost-reports', (req, res) => {
-  res.json(db.lostReports);
+app.get('/api/lost-reports', async (req, res) => {
+  const reports = await dbService.getLostReports();
+  res.json(reports);
 });
 
-app.post('/api/lost-reports', (req, res) => {
+app.post('/api/lost-reports', async (req, res) => {
   const report = req.body;
-  db.lostReports.unshift(report);
+  const savedReport = await dbService.addLostReport(report);
 
-  db.notifications.unshift({
+  await dbService.addNotification({
     id: `NT-${Date.now()}`,
     title: "Lost Report Filed",
     message: `Your lost report for '${report.name}' has been submitted successfully.`,
@@ -253,7 +623,7 @@ app.post('/api/lost-reports', (req, res) => {
     unread: true
   });
 
-  db.activities.unshift({
+  await dbService.addActivity({
     time: getFormattedTime(),
     text: `Student filed Lost Report: <strong>${report.name}</strong>.`,
     type: "Lost Report",
@@ -261,30 +631,31 @@ app.post('/api/lost-reports', (req, res) => {
     timestamp: new Date().toISOString()
   });
 
-  res.status(201).json(report);
+  res.status(201).json(savedReport);
 });
 
-app.post('/api/lost-reports/:id/match', (req, res) => {
+app.post('/api/lost-reports/:id/match', async (req, res) => {
   const id = req.params.id;
   const { itemId } = req.body;
 
-  const reportIndex = db.lostReports.findIndex(r => r.id === id);
-  const item = db.verifiedItems.find(i => i.id === itemId);
+  const reports = await dbService.getLostReports();
+  const report = reports.find(r => r.id === id);
+  const items = await dbService.getItems();
+  const item = items.find(i => i.id === itemId);
 
-  if (reportIndex > -1 && item) {
-    db.lostReports[reportIndex].status = "Possible Match Found";
-    db.lostReports[reportIndex].matchedItemId = itemId;
+  if (report && item) {
+    await dbService.updateLostReportMatch(id, "Possible Match Found", itemId);
 
-    db.notifications.unshift({
+    await dbService.addNotification({
       id: `NT-${Date.now()}`,
       title: "Possible Match Found",
-      message: `Management has matched your lost report '${db.lostReports[reportIndex].name}' with verified item Ref: #${item.reference}. Please check details and submit claim proof.`,
+      message: `Management has matched your lost report '${report.name}' with verified item Ref: #${item.reference}. Please check details and submit claim proof.`,
       time: "Just now",
       type: "warning",
       unread: true
     });
 
-    db.activities.unshift({
+    await dbService.addActivity({
       time: getFormattedTime(),
       text: `Admin suggested match for Lost Report <strong>${id}</strong> with Verified Item <strong>${itemId}</strong>.`,
       type: "Match Suggestion",
@@ -292,22 +663,23 @@ app.post('/api/lost-reports/:id/match', (req, res) => {
       timestamp: new Date().toISOString()
     });
 
-    res.json(db.lostReports[reportIndex]);
+    const updatedReports = await dbService.getLostReports();
+    res.json(updatedReports.find(r => r.id === id));
   } else {
     res.status(404).json({ error: "Report or Item not found" });
   }
 });
 
-
-app.get('/api/found-reports', (req, res) => {
-  res.json(db.foundReports);
+app.get('/api/found-reports', async (req, res) => {
+  const reports = await dbService.getFoundReports();
+  res.json(reports);
 });
 
-app.post('/api/found-reports', (req, res) => {
+app.post('/api/found-reports', async (req, res) => {
   const report = req.body;
-  db.foundReports.unshift(report);
+  const savedReport = await dbService.addFoundReport(report);
 
-  db.notifications.unshift({
+  await dbService.addNotification({
     id: `NT-${Date.now()}`,
     title: "Found Item Reported",
     message: `You reported finding a '${report.name}'. Please hand it over to the Lost & Found Counter.`,
@@ -316,7 +688,7 @@ app.post('/api/found-reports', (req, res) => {
     unread: true
   });
 
-  db.activities.unshift({
+  await dbService.addActivity({
     time: getFormattedTime(),
     text: `Found Item reported: <strong>${report.name}</strong> by finder <strong>${report.finderMatric}</strong>.`,
     type: "Found Report",
@@ -324,17 +696,17 @@ app.post('/api/found-reports', (req, res) => {
     timestamp: new Date().toISOString()
   });
 
-  res.status(201).json(report);
+  res.status(201).json(savedReport);
 });
 
-app.delete('/api/found-reports/:id', (req, res) => {
+app.delete('/api/found-reports/:id', async (req, res) => {
   const id = req.params.id;
-  const index = db.foundReports.findIndex(f => f.id === id);
-  if (index > -1) {
-    const item = db.foundReports[index];
-    db.foundReports.splice(index, 1);
+  const reports = await dbService.getFoundReports();
+  const item = reports.find(f => f.id === id);
+  if (item) {
+    await dbService.deleteFoundReport(id);
 
-    db.notifications.unshift({
+    await dbService.addNotification({
       id: `NT-${Date.now()}`,
       title: "Found Report Rejected",
       message: `Your found report for '${item.name}' was rejected by management.`,
@@ -343,7 +715,7 @@ app.delete('/api/found-reports/:id', (req, res) => {
       unread: true
     });
 
-    db.activities.unshift({
+    await dbService.addActivity({
       time: getFormattedTime(),
       text: `Admin rejected found report: <strong>${item.name}</strong>.`,
       type: "Rejection",
@@ -357,28 +729,23 @@ app.delete('/api/found-reports/:id', (req, res) => {
   }
 });
 
-app.get('/api/claims', (req, res) => {
-  res.json(db.claims);
+app.get('/api/claims', async (req, res) => {
+  const claims = await dbService.getClaims();
+  res.json(claims);
 });
 
-app.post('/api/claims', (req, res) => {
+app.post('/api/claims', async (req, res) => {
   const claim = req.body;
-  db.claims.unshift(claim);
+  const savedClaim = await dbService.addClaim(claim);
 
-  const itemIndex = db.verifiedItems.findIndex(i => i.id === claim.itemId);
-  if (itemIndex > -1) {
-    db.verifiedItems[itemIndex].status = "Claim Pending";
-  }
+  await dbService.updateItemStatus(claim.itemId, "Claim Pending");
 
   // Sync state of linked lost report
   if (claim.lostReportId) {
-    const reportIndex = db.lostReports.findIndex(r => r.id === claim.lostReportId);
-    if (reportIndex > -1) {
-      db.lostReports[reportIndex].status = "Claim Pending";
-    }
+    await dbService.updateLostReportMatch(claim.lostReportId, "Claim Pending", claim.itemId);
   }
 
-  db.notifications.unshift({
+  await dbService.addNotification({
     id: `NT-${Date.now()}`,
     title: "Claim Submitted Successfully",
     message: `Management will review your proof of ownership and update your claim status.`,
@@ -387,7 +754,7 @@ app.post('/api/claims', (req, res) => {
     unread: true
   });
 
-  db.activities.unshift({
+  await dbService.addActivity({
     time: getFormattedTime(),
     text: `Claim request submitted by <strong>${claim.studentMatric}</strong> on <strong>${claim.itemName}</strong>.`,
     type: "Claim Request",
@@ -395,29 +762,25 @@ app.post('/api/claims', (req, res) => {
     timestamp: new Date().toISOString()
   });
 
-  res.status(201).json(claim);
+  res.status(201).json(savedClaim);
 });
 
-app.put('/api/claims/:id', (req, res) => {
+app.put('/api/claims/:id', async (req, res) => {
   const id = req.params.id;
   const { status, adminNote } = req.body;
 
-  const claimIndex = db.claims.findIndex(c => c.id === id);
-  if (claimIndex > -1) {
-    db.claims[claimIndex].status = status;
-    if (adminNote !== undefined) {
-      db.claims[claimIndex].adminNote = adminNote;
-    }
-    const claim = db.claims[claimIndex];
-
-    const itemIndex = db.verifiedItems.findIndex(i => i.id === claim.itemId);
-    const reportIndex = claim.lostReportId ? db.lostReports.findIndex(r => r.id === claim.lostReportId) : -1;
+  const claims = await dbService.getClaims();
+  const claim = claims.find(c => c.id === id);
+  if (claim) {
+    await dbService.updateClaimStatus(id, status, adminNote);
 
     if (status === 'Ready for Collection') {
-      if (itemIndex > -1) db.verifiedItems[itemIndex].status = "Ready for Collection";
-      if (reportIndex > -1) db.lostReports[reportIndex].status = "Ready for Collection";
+      await dbService.updateItemStatus(claim.itemId, "Ready for Collection");
+      if (claim.lostReportId) {
+        await dbService.updateLostReportMatch(claim.lostReportId, "Ready for Collection", claim.itemId);
+      }
 
-      db.notifications.unshift({
+      await dbService.addNotification({
         id: `NT-${Date.now()}`,
         title: "Claim Approved",
         message: `Your claim for '${claim.itemName}' was approved. Please collect your item at the Lost & Found Counter.`,
@@ -426,7 +789,7 @@ app.put('/api/claims/:id', (req, res) => {
         unread: true
       });
 
-      db.activities.unshift({
+      await dbService.addActivity({
         time: getFormattedTime(),
         text: `Claim approved: <strong>${claim.itemName}</strong> ready for collection.`,
         type: "Claim Approval",
@@ -435,10 +798,12 @@ app.put('/api/claims/:id', (req, res) => {
       });
     }
     else if (status === 'Returned') {
-      if (itemIndex > -1) db.verifiedItems[itemIndex].status = "Returned";
-      if (reportIndex > -1) db.lostReports[reportIndex].status = "Returned";
+      await dbService.updateItemStatus(claim.itemId, "Returned");
+      if (claim.lostReportId) {
+        await dbService.updateLostReportMatch(claim.lostReportId, "Returned", claim.itemId);
+      }
 
-      db.notifications.unshift({
+      await dbService.addNotification({
         id: `NT-${Date.now()}`,
         title: "Item Returned Successfully",
         message: `Your item '${claim.itemName}' has been marked as returned.`,
@@ -447,7 +812,7 @@ app.put('/api/claims/:id', (req, res) => {
         unread: true
       });
 
-      db.activities.unshift({
+      await dbService.addActivity({
         time: getFormattedTime(),
         text: `Item returned: <strong>${claim.itemName}</strong> returned to <strong>${claim.studentName}</strong>.`,
         type: "Item Returned",
@@ -456,13 +821,12 @@ app.put('/api/claims/:id', (req, res) => {
       });
     }
     else if (status === 'Rejected') {
-      if (itemIndex > -1) db.verifiedItems[itemIndex].status = "Available for Claim";
-      if (reportIndex > -1) {
-        db.lostReports[reportIndex].status = "Submitted";
-        db.lostReports[reportIndex].matchedItemId = null;
+      await dbService.updateItemStatus(claim.itemId, "Available for Claim");
+      if (claim.lostReportId) {
+        await dbService.updateLostReportMatch(claim.lostReportId, "Submitted", null);
       }
 
-      db.notifications.unshift({
+      await dbService.addNotification({
         id: `NT-${Date.now()}`,
         title: "Claim Rejected",
         message: `Your claim for '${claim.itemName}' was rejected by management.`,
@@ -471,7 +835,7 @@ app.put('/api/claims/:id', (req, res) => {
         unread: true
       });
 
-      db.activities.unshift({
+      await dbService.addActivity({
         time: getFormattedTime(),
         text: `Admin rejected claim request by <strong>${claim.studentMatric}</strong> on <strong>${claim.itemName}</strong>.`,
         type: "Claim Rejection",
@@ -480,23 +844,24 @@ app.put('/api/claims/:id', (req, res) => {
       });
     }
 
-    res.json(claim);
+    const updatedClaims = await dbService.getClaims();
+    res.json(updatedClaims.find(c => c.id === id));
   } else {
     res.status(404).json({ error: "Claim not found" });
   }
 });
 
-app.post('/api/admin/verify-intake', (req, res) => {
+app.post('/api/admin/verify-intake', async (req, res) => {
   const { reportId, verifiedItem } = req.body;
 
-  db.verifiedItems.unshift(verifiedItem);
+  await dbService.addItem(verifiedItem);
 
-  const index = db.foundReports.findIndex(f => f.id === reportId);
-  if (index > -1) {
-    const report = db.foundReports[index];
-    db.foundReports.splice(index, 1);
+  const reports = await dbService.getFoundReports();
+  const report = reports.find(f => f.id === reportId);
+  if (report) {
+    await dbService.deleteFoundReport(reportId);
 
-    db.notifications.unshift({
+    await dbService.addNotification({
       id: `NT-${Date.now()}`,
       title: "Your found item has been verified.",
       message: `Thank you! Your found report for '${report.name}' has been verified and marked as available for claim.`,
@@ -505,7 +870,7 @@ app.post('/api/admin/verify-intake', (req, res) => {
       unread: true
     });
 
-    db.activities.unshift({
+    await dbService.addActivity({
       time: getFormattedTime(),
       text: `Found item verified: <strong>${verifiedItem.name}</strong> marked as Available for Claim.`,
       type: "Verification",
@@ -517,54 +882,60 @@ app.post('/api/admin/verify-intake', (req, res) => {
   res.json({ success: true, verifiedItem });
 });
 
-app.get('/api/notifications', (req, res) => {
-  res.json(db.notifications);
+app.get('/api/notifications', async (req, res) => {
+  const notifications = await dbService.getNotifications();
+  res.json(notifications);
 });
 
-app.put('/api/notifications/:id/read', (req, res) => {
+app.put('/api/notifications/:id/read', async (req, res) => {
   const id = req.params.id;
-  const index = db.notifications.findIndex(n => n.id === id);
+  const notifications = await dbService.getNotifications();
+  const index = notifications.findIndex(n => n.id === id);
   if (index > -1) {
-    db.notifications[index].unread = false;
-    res.json(db.notifications[index]);
+    await dbService.markNotificationRead(id);
+    const updatedNotifications = await dbService.getNotifications();
+    res.json(updatedNotifications.find(n => n.id === id));
   } else {
     res.status(404).json({ error: "Notification not found" });
   }
 });
 
-app.put('/api/notifications/read-all', (req, res) => {
-  db.notifications.forEach(n => n.unread = false);
+app.put('/api/notifications/read-all', async (req, res) => {
+  await dbService.markAllNotificationsRead();
   res.json({ success: true });
 });
 
-app.get('/api/activities', (req, res) => {
-  res.json(db.activities);
+app.get('/api/activities', async (req, res) => {
+  const activities = await dbService.getActivities();
+  res.json(activities);
 });
 
-app.post('/api/reset', (req, res) => {
-  db = JSON.parse(JSON.stringify(DEFAULT_STATE));
+app.post('/api/reset', async (req, res) => {
+  await dbService.reset();
   res.json({ success: true, message: "Database state reset to defaults." });
 });
 
-app.put('/api/found-reports/:id/status', (req, res) => {
+app.put('/api/found-reports/:id/status', async (req, res) => {
   const id = req.params.id;
   const { status } = req.body;
-  const index = db.foundReports.findIndex(f => f.id === id);
+  const reports = await dbService.getFoundReports();
+  const index = reports.findIndex(f => f.id === id);
   if (index > -1) {
-    db.foundReports[index].status = status;
+    await dbService.updateFoundReportStatus(id, status);
 
     if (status === "Under Review") {
-      db.notifications.unshift({
+      await dbService.addNotification({
         id: `NT-${Date.now()}`,
         title: "Item Verification Started",
-        message: `Your found item '${db.foundReports[index].name}' status is now: Under Review.`,
+        message: `Your found item '${reports[index].name}' status is now: Under Review.`,
         time: "Just now",
         type: "info",
         unread: true
       });
     }
 
-    res.json(db.foundReports[index]);
+    const updatedReports = await dbService.getFoundReports();
+    res.json(updatedReports.find(f => f.id === id));
   } else {
     res.status(404).json({ error: "Report not found" });
   }
