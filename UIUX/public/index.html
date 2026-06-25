@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>UMSKAL Lost & Found - Student Portal</title>
+  <link rel="stylesheet" href="student.css?v=1.0.7">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+  <!-- Dynamic Screen Content Container -->
+  <div class="mobile-content-container">
+
+    <!-- SCREEN 1: LOGIN -->
+    <div class="mobile-screen active" id="scr-student-login">
+      <div class="screen-body login-screen-flex">
+        <div class="login-logo-container">
+          <img src="logo.png" alt="UMSKAL Lost & Found Logo">
+        </div>
+
+        <h1 class="auth-title">Welcome Back</h1>
+        <p class="auth-subtitle">Sign in to continue</p>
+
+        <div class="auth-card">
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="auth-label" for="student-email">Student / Staff Email</label>
+            <div class="auth-input-wrapper has-left-icon">
+              <input type="email" id="student-email" class="auth-input" placeholder="example@iluv.ums.edu.my" value="">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="auth-label" for="student-password">Password</label>
+            <div class="auth-input-wrapper has-right-icon">
+              <input type="password" id="student-password" class="auth-input" placeholder="••••••••"
+                value="password123">
+              <button type="button" class="password-toggle-btn"
+                onclick="togglePasswordVisibility('student-password', this)">
+              </button>
+            </div>
+          </div>
+
+          <div class="auth-options-row">
+            <label class="auth-remember-me">
+              <input type="checkbox" checked> Remember me
+            </label>
+            <a href="#" class="auth-forgot-password">Forgot Password?</a>
+          </div>
+
+          <button class="auth-btn-gold" onclick="studentLogin()">
+            Log In
+          </button>
+        </div>
+
+        <p class="auth-switch-link">Don't have an account? <a href="#"
+            onclick="navigateToStudentScreen('scr-student-register')">Create Account</a></p>
+
+        <!-- Bottom Features Highlights -->
+        <div class="auth-features-row">
+          <div class="auth-feature-item">
+            <div class="auth-feature-icon-circle">
+              <i data-lucide="mail"></i>
+            </div>
+            <span class="auth-feature-title">Report Easily</span>
+            <span class="auth-feature-desc">Report lost items in minutes</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="auth-feature-icon-circle">
+              <i data-lucide="search"></i>
+            </div>
+            <span class="auth-feature-title">Search Quickly</span>
+            <span class="auth-feature-desc">Find items on campus</span>
+          </div>
+          <div class="auth-feature-item">
+            <div class="auth-feature-icon-circle">
+              <i data-lucide="shield-check"></i>
+            </div>
+            <span class="auth-feature-title">Claim Safely</span>
+            <span class="auth-feature-desc">Secure verification process</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 1B: REGISTER -->
+    <div class="mobile-screen" id="scr-student-register">
+      <div class="screen-body login-screen-flex">
+        <!-- Floating Back Button -->
+        <button class="register-back-btn" onclick="navigateToStudentScreen('scr-student-login')" aria-label="Go back">
+          <i data-lucide="chevron-left"></i>
+        </button>
+
+        <div class="login-logo-container">
+          <img src="logo.png" alt="UMSKAL Lost & Found Logo">
+        </div>
+
+        <h1 class="auth-title">Create Account</h1>
+        <p class="auth-subtitle">Sign up to get started</p>
+
+        <div class="auth-card" style="margin-bottom: 14px;">
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="auth-label" for="register-fullname">Full Name</label>
+            <div class="auth-input-wrapper has-left-icon">
+              <input type="text" id="register-fullname" class="auth-input" placeholder="">
+            </div>
+            <div class="field-error-msg" id="err-register-fullname" style="margin-top: -8px; margin-bottom: 8px;">Please
+              enter your full name.</div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="auth-label" for="register-matric">Student Matric Number</label>
+            <div class="auth-input-wrapper has-left-icon">
+              <input type="text" id="register-matric" class="auth-input" placeholder="">
+            </div>
+            <div class="field-error-msg" id="err-register-matric" style="margin-top: -8px; margin-bottom: 8px;">Please
+              enter your matric number.</div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="auth-label" for="register-email">Email Address</label>
+            <div class="auth-input-wrapper has-left-icon">
+              <input type="email" id="register-email" class="auth-input" placeholder="example@iluv.ums.edu.my">
+            </div>
+            <div class="field-error-msg" id="err-register-email" style="margin-top: -8px; margin-bottom: 8px;">Please
+              enter a valid email.</div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label class="auth-label" for="register-phone">Phone Number</label>
+            <div class="auth-input-wrapper has-left-icon">
+              <input type="tel" id="register-phone" class="auth-input" placeholder="012-3456789">
+            </div>
+            <div class="field-error-msg" id="err-register-phone" style="margin-top: -8px; margin-bottom: 8px;">Please
+              enter your phone number.</div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 20px;">
+            <label class="auth-label" for="register-password">Password</label>
+            <div class="auth-input-wrapper has-right-icon">
+              <input type="password" id="register-password" class="auth-input" placeholder="••••••••">
+              <button type="button" class="password-toggle-btn"
+                onclick="togglePasswordVisibility('register-password', this)">
+              </button>
+            </div>
+            <div class="field-error-msg" id="err-register-password" style="margin-top: -8px; margin-bottom: 8px;">Please
+              enter a password.</div>
+          </div>
+
+          <button class="auth-btn-gold" onclick="studentRegister()">
+            Register
+          </button>
+        </div>
+
+        <p class="auth-switch-link" style="margin-bottom: 20px;">Already have an account? <a href="#"
+            onclick="navigateToStudentScreen('scr-student-login')">Log In</a></p>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: HOME DASHBOARD -->
+    <div class="mobile-screen" id="scr-student-home">
+      <div class="mobile-header">
+        <div class="user-greeting">
+          <p>Welcome back</p>
+          <h3 id="home-greeting-name">Hi, Student</h3>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <!-- Help Process button in header -->
+          <button class="bell-btn" onclick="navigateToStudentScreen('scr-student-help')" title="Help & Process">
+            <i data-lucide="help-circle" style="width:20px; height:20px; stroke: var(--primary);"></i>
+          </button>
+          <!-- Profile button in header -->
+          <button class="bell-btn" onclick="navigateToStudentScreen('scr-student-profile')" title="My Profile">
+            <i data-lucide="user" style="width:20px; height:20px; stroke: var(--primary);"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="screen-body">
+        <!-- Search bar input leading to Search screen -->
+        <div class="form-group" style="margin-top:12px;" onclick="navigateToStudentTab('search')">
+          <div class="form-control"
+            style="display:flex; align-items:center; gap:10px; color:var(--text-muted); cursor:pointer;">
+            <i data-lucide="search" style="width:18px; height:18px;"></i>
+            <span>Search item, category, or location</span>
+          </div>
+        </div>
+
+        <!-- Main Actions -->
+        <div class="dash-actions-row">
+          <div class="action-card card-lost" onclick="navigateToStudentScreen('scr-student-report-lost')">
+            <div class="action-card-icon">
+              <i data-lucide="search-code"></i>
+            </div>
+            <span class="action-card-title">I Lost an Item</span>
+            <span class="action-card-desc">Report missing item</span>
+            <div class="action-card-btn">
+              <span>Report Lost</span>
+              <i data-lucide="chevron-right" style="width:14px; height:14px;"></i>
+            </div>
+          </div>
+
+          <div class="action-card card-found" onclick="navigateToStudentScreen('scr-student-report-found')">
+            <div class="action-card-icon">
+              <i data-lucide="package-plus"></i>
+            </div>
+            <span class="action-card-title">I Found an Item</span>
+            <span class="action-card-desc">Submit found item</span>
+            <div class="action-card-btn">
+              <span>Report Found</span>
+              <i data-lucide="chevron-right" style="width:14px; height:14px;"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust / Process Note -->
+        <div class="trust-note-strip">
+          <i data-lucide="info" style="width: 14px; height: 14px; flex-shrink: 0;"></i>
+          <span>Found items must be handed to management before they appear for claim.</span>
+        </div>
+
+        <!-- Status Tracker preview widget -->
+        <div class="section-header-row">
+          <h4>My Latest Status</h4>
+          <span class="view-all" onclick="navigateToStudentTab('reports')">View All</span>
+        </div>
+        <div id="home-latest-status-container">
+          <!-- Populated dynamically -->
+        </div>
+
+        <!-- Recently verified items section -->
+        <div class="section-header-row" style="margin-top:20px;">
+          <h4>Recently Verified Items</h4>
+          <span class="view-all" onclick="navigateToStudentTab('search')">Browse</span>
+        </div>
+        <div class="item-card-horizontal-container" id="home-recent-verified-list">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: REPORT LOST ITEM FORM -->
+    <div class="mobile-screen" id="scr-student-report-lost">
+      <div class="mobile-header">
+        <button class="back-btn" onclick="navigateToStudentScreen('scr-student-home')">
+          <i data-lucide="chevron-left"></i>
+        </button>
+        <h2>Report Lost Item</h2>
+        <div style="width: 24px;"></div>
+      </div>
+      <div class="screen-body" style="padding-top:20px;">
+
+        <!-- Stepper Indicator Header -->
+        <div class="stepper-header"
+          style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding: 0 10px;">
+          <div class="step-indicator-item active" id="step-lost-1"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#1E3A8A; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">1</span>
+            <span class="step-label" style="font-size:11px; font-weight:600; color:#1E3A8A;">Details</span>
+          </div>
+          <div class="step-connector"
+            style="height:2px; background-color:var(--border-color); flex:1; margin-bottom:18px;" id="conn-lost-1">
+          </div>
+          <div class="step-indicator-item" id="step-lost-2"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#E2E8F0; color:var(--text-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">2</span>
+            <span class="step-label" style="font-size:11px; font-weight:500; color:var(--text-muted);">Location</span>
+          </div>
+          <div class="step-connector"
+            style="height:2px; background-color:var(--border-color); flex:1; margin-bottom:18px;" id="conn-lost-2">
+          </div>
+          <div class="step-indicator-item" id="step-lost-3"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#E2E8F0; color:var(--text-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">3</span>
+            <span class="step-label" style="font-size:11px; font-weight:500; color:var(--text-muted);">Submit</span>
+          </div>
+        </div>
+
+        <!-- STEP 1: BASIC DETAILS -->
+        <div class="stepper-panel" id="step-lost-panel-1">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 1: Tell us what item you are looking for.
+          </p>
+          <div class="form-group">
+            <label for="lost-name">Item Name *</label>
+            <input type="text" id="lost-name" class="form-control" placeholder="e.g. Matric Card, keys, powerbank">
+            <div class="field-error-msg" id="err-lost-name">Please enter the item name.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Category *</label>
+            <div class="category-chips-grid" id="lost-category-chips"
+              style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:8px;">
+              <!-- Dynamically populated from admin settings -->
+            </div>
+            <!-- Hidden Category Select element for state mapping -->
+            <select id="lost-category" class="form-control" style="display:none;">
+              <option value="" disabled selected>Select category</option>
+            </select>
+            <div class="field-error-msg" id="err-lost-category">Please select a category.</div>
+          </div>
+
+          <button class="btn btn-primary" onclick="nextLostStep(1)" style="margin-top:10px;">
+            Next Step
+          </button>
+        </div>
+
+        <!-- STEP 2: LOCATION DETAILS -->
+        <div class="stepper-panel" id="step-lost-panel-2" style="display:none;">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 2: Tell us where and when you last saw the item.
+          </p>
+          <div class="form-group">
+            <label for="lost-location">Last Seen Location *</label>
+            <input type="text" id="lost-location" class="form-control" placeholder="e.g. Library, Block F, Cafeteria">
+            <div class="field-error-msg" id="err-lost-location">Please select a location.</div>
+          </div>
+
+          <div class="form-group" style="display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:12px;">
+            <div>
+              <label for="lost-date">Date Lost *</label>
+              <input type="date" id="lost-date" class="form-control">
+              <div class="field-error-msg" id="err-lost-date">Required field.</div>
+            </div>
+            <div>
+              <label for="lost-time">Time Lost *</label>
+              <input type="time" id="lost-time" class="form-control">
+              <div class="field-error-msg" id="err-lost-time">Required field.</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-top:20px;">
+            <button class="btn btn-secondary" onclick="prevLostStep(2)" style="flex:1;">Back</button>
+            <button class="btn btn-primary" onclick="nextLostStep(2)" style="flex:1;">Next Step</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: SUBMIT -->
+        <div class="stepper-panel" id="step-lost-panel-3" style="display:none;">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 3: Provide descriptions and upload a mockup image.
+          </p>
+          <div class="form-group">
+            <label for="lost-desc">Description (color, brand, keys attached) *</label>
+            <textarea id="lost-desc" class="form-control" placeholder="Describe unique features..."></textarea>
+            <div class="field-error-msg" id="err-lost-desc">Required field.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Upload Photo (Optional)</label>
+            <div class="upload-box" id="upload-lost-photo-box" onclick="triggerUpload('lost')">
+              <i data-lucide="image-plus" class="upload-icon" id="icon-upload-lost"></i>
+              <span class="upload-text" id="text-upload-lost">Choose a photo</span>
+              <span class="upload-sub" id="sub-upload-lost">PNG, JPG up to 5MB</span>
+              <img id="preview-lost-img" class="upload-preview-img" style="display:none;">
+              <div id="overlay-lost-remove" class="upload-remove-overlay" style="display:none;"
+                onclick="removeUpload(event, 'lost')">Remove Photo</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-top:20px; margin-bottom:20px;">
+            <button class="btn btn-secondary" onclick="prevLostStep(3)" style="flex:1;">Back</button>
+            <button class="btn btn-primary" onclick="submitLostReport()" style="flex:1;">Submit Lost Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: REPORT FOUND ITEM FORM -->
+    <div class="mobile-screen" id="scr-student-report-found">
+      <div class="mobile-header">
+        <button class="back-btn" onclick="navigateToStudentScreen('scr-student-home')">
+          <i data-lucide="chevron-left"></i>
+        </button>
+        <h2>Report Found Item</h2>
+        <div style="width: 24px;"></div>
+      </div>
+      <div class="screen-body" style="padding-top:20px;">
+
+        <!-- Stepper Indicator Header -->
+        <div class="stepper-header"
+          style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding: 0 10px;">
+          <div class="step-indicator-item active" id="step-found-1"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#1E3A8A; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">1</span>
+            <span class="step-label" style="font-size:11px; font-weight:600; color:#1E3A8A;">Details</span>
+          </div>
+          <div class="step-connector"
+            style="height:2px; background-color:var(--border-color); flex:1; margin-bottom:18px;" id="conn-found-1">
+          </div>
+          <div class="step-indicator-item" id="step-found-2"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#E2E8F0; color:var(--text-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">2</span>
+            <span class="step-label" style="font-size:11px; font-weight:500; color:var(--text-muted);">Location</span>
+          </div>
+          <div class="step-connector"
+            style="height:2px; background-color:var(--border-color); flex:1; margin-bottom:18px;" id="conn-found-2">
+          </div>
+          <div class="step-indicator-item" id="step-found-3"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#E2E8F0; color:var(--text-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">3</span>
+            <span class="step-label" style="font-size:11px; font-weight:500; color:var(--text-muted);">Submit</span>
+          </div>
+        </div>
+
+        <!-- STEP 1: DETAILS -->
+        <div class="stepper-panel" id="step-found-panel-1">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 1: Enter basic details of the found item.
+          </p>
+          <div class="form-group">
+            <label for="found-name">Item Name *</label>
+            <input type="text" id="found-name" class="form-control" placeholder="e.g. Black keyset, Blue bottle">
+            <div class="field-error-msg" id="err-found-name">Please enter the item name.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Category *</label>
+            <div class="category-chips-grid" id="found-category-chips"
+              style="display:grid; grid-template-columns: repeat(3, 1fr); gap:8px; margin-bottom:8px;">
+              <!-- Dynamically populated from admin settings -->
+            </div>
+            <!-- Hidden Category Select element for state mapping -->
+            <select id="found-category" class="form-control" style="display:none;">
+              <option value="" disabled selected>Select category</option>
+            </select>
+            <div class="field-error-msg" id="err-found-category">Please select a category.</div>
+          </div>
+
+          <button class="btn btn-primary" onclick="nextFoundStep(1)" style="margin-top:10px;">
+            Next Step
+          </button>
+        </div>
+
+        <!-- STEP 2: LOCATION -->
+        <div class="stepper-panel" id="step-found-panel-2" style="display:none;">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 2: Tell us where and when you found it.
+          </p>
+          <div class="form-group">
+            <label for="found-location">Found Location *</label>
+            <input type="text" id="found-location" class="form-control" placeholder="e.g. DK 3 lobby, Gym, Musolla">
+            <div class="field-error-msg" id="err-found-location">Please select a location.</div>
+          </div>
+
+          <div class="form-group" style="display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:12px;">
+            <div>
+              <label for="found-date">Date Found *</label>
+              <input type="date" id="found-date" class="form-control">
+              <div class="field-error-msg" id="err-found-date">Required field.</div>
+            </div>
+            <div>
+              <label for="found-time">Time Found *</label>
+              <input type="time" id="found-time" class="form-control">
+              <div class="field-error-msg" id="err-found-time">Required field.</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-top:20px;">
+            <button class="btn btn-secondary" onclick="prevFoundStep(2)" style="flex:1;">Back</button>
+            <button class="btn btn-primary" onclick="nextFoundStep(2)" style="flex:1;">Next Step</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: SUBMIT -->
+        <div class="stepper-panel" id="step-found-panel-3" style="display:none;">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 3: Upload item image and short description.
+          </p>
+          <div class="form-group">
+            <label>Upload Photo *</label>
+            <div class="upload-box" id="upload-found-photo-box" onclick="triggerUpload('found')">
+              <i data-lucide="image-plus" class="upload-icon" id="icon-upload-found"></i>
+              <span class="upload-text" id="text-upload-found">Upload Photo</span>
+              <span class="upload-sub" id="sub-upload-found">Take a clear picture of the item</span>
+              <img id="preview-found-img" class="upload-preview-img" style="display:none;">
+              <div id="overlay-found-remove" class="upload-remove-overlay" style="display:none;"
+                onclick="removeUpload(event, 'found')">Remove Photo</div>
+            </div>
+            <div class="field-error-msg" id="err-found-photo">Please upload a photo of the found item.</div>
+          </div>
+
+          <div class="form-group">
+            <label for="found-desc">Short Description *</label>
+            <textarea id="found-desc" class="form-control"
+              placeholder="Describe location details or unique marks..."></textarea>
+            <div class="field-error-msg" id="err-found-desc">Required field.</div>
+          </div>
+
+          <div class="info-box">
+            <i data-lucide="info" style="color: var(--info); width:18px; height:18px; flex-shrink:0;"></i>
+            <p>After submitting, please hand over the item to the Lost & Found Counter for admin verification.</p>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-top:20px; margin-bottom:20px;">
+            <button class="btn btn-secondary" onclick="prevFoundStep(3)" style="flex:1;">Back</button>
+            <button class="btn btn-primary" onclick="submitFoundReport()" style="flex:1;">Submit Found Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: SUBMISSION SUCCESS SCREEN -->
+    <div class="mobile-screen" id="scr-student-success">
+      <div class="screen-body success-screen-flex">
+        <div class="success-icon-wrapper">
+          <i data-lucide="check-circle-2" style="width:36px; height:36px; stroke: var(--success);"></i>
+        </div>
+
+        <h3 id="success-title" style="font-weight: 700; margin-bottom: 12px; color: var(--text-main);">Report Submitted
+          Successfully!</h3>
+        <p id="success-message"
+          style="font-size:14px; color:var(--text-muted); line-height:1.4; margin-bottom:32px; padding:0 12px;">
+          We will notify you if a matching item is found. You can track this report in My Reports.
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:12px; width:100%;">
+          <button class="btn btn-primary" onclick="navigateToStudentTab('reports')">
+            View My Reports
+          </button>
+          <button class="btn btn-secondary" onclick="navigateToStudentScreen('scr-student-home')">
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: SEARCH / BROWSE ITEMS -->
+    <div class="mobile-screen" id="scr-student-search">
+      <div class="mobile-header"
+        style="flex-direction:column; align-items:stretch; gap:10px; padding-top:16px; padding-bottom:14px; height:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h2>Search Found Items</h2>
+          <span style="font-size:12px; color:#1E3A8A; font-weight:600; display:flex; align-items:center; gap:4px;">
+            <i data-lucide="shield-check" style="width:16px; height:16px;"></i> Verified
+          </span>
+        </div>
+
+        <div style="position:relative; width:100%;">
+          <i data-lucide="search"
+            style="position:absolute; left:12px; top:12px; width:18px; height:18px; color:var(--text-muted);"></i>
+          <input type="text" id="search-input" class="form-control" placeholder="Search wallet, card, bottle..."
+            style="padding-left:42px; height:42px; font-size:14px;" oninput="filterItems()">
+        </div>
+
+        <div class="category-chips" id="search-category-filter">
+          <!-- Dynamically populated from admin settings -->
+        </div>
+      </div>
+
+      <div class="screen-body" id="search-screen-body">
+        <div id="search-results-list"></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 7: ITEM DETAIL SCREEN -->
+    <div class="mobile-screen" id="scr-student-item-detail">
+      <div class="mobile-header">
+        <button class="back-btn" onclick="navigateToStudentTab('search')">
+          <i data-lucide="chevron-left"></i>
+        </button>
+        <h2>Item Details</h2>
+        <div style="width: 24px;"></div>
+      </div>
+      <div class="screen-body" style="padding-bottom:100px;">
+        <div
+          style="width:100%; height:200px; border-radius:12px; overflow:hidden; background-color:#E2E8F0; margin-bottom:16px; display:flex; align-items:center; justify-content:center; border:1px solid var(--border-color);">
+          <img id="detail-item-img" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+          <div style="text-align:left;">
+            <h3 id="detail-item-name" style="font-size:18px; font-weight:700; color:var(--text-main);">Item Name</h3>
+            <p id="detail-item-category" style="font-size:13px; color:var(--text-muted); font-weight:500;">Category:
+              Wallet</p>
+          </div>
+          <span class="status-badge badge-available-for-claim" id="detail-item-status">Available for Claim</span>
+        </div>
+
+        <div
+          style="background-color:var(--success-bg); color:var(--success); font-weight:600; font-size:12px; padding:10px 14px; border-radius:10px; display:flex; align-items:center; gap:8px; margin-bottom:20px; text-align:left;">
+          <i data-lucide="shield-check" style="width:16px; height:16px;"></i>
+          <span>Verified by Management</span>
+        </div>
+
+        <div
+          style="background-color:#FFFFFF; border:1px solid var(--border-color); border-radius:12px; padding:16px; display:flex; flex-direction:column; gap:12px; text-align:left; margin-bottom:20px;">
+          <div
+            style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+            <span style="font-size:13px; color:var(--text-muted); font-weight:500;">Found Location:</span>
+            <span id="detail-item-location" style="font-size:13px; color:var(--text-main); font-weight:600;">Library
+              Lobby</span>
+          </div>
+          <div
+            style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border-color); padding-bottom:8px;">
+            <span style="font-size:13px; color:var(--text-muted); font-weight:500;">Found Date:</span>
+            <span id="detail-item-date" style="font-size:13px; color:var(--text-main); font-weight:600;">12 June
+              2026</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="font-size:13px; color:var(--text-muted); font-weight:500;">Reference No:</span>
+            <span id="detail-item-ref" style="font-size:13px; color:var(--text-main); font-weight:600;">#LF-0104</span>
+          </div>
+        </div>
+
+        <div class="info-box">
+          <i data-lucide="eye-off" style="color: var(--info); width:18px; height:18px; flex-shrink:0;"></i>
+          <p>To protect privacy, some item details are hidden. The real owner must provide proof during claim.</p>
+        </div>
+
+        <button class="btn btn-primary" id="detail-claim-btn" onclick="openClaimForm()" style="margin-top:10px;">
+          Claim This Item
+        </button>
+      </div>
+    </div>
+
+    <!-- SCREEN 8: SUBMIT CLAIM REQUEST -->
+    <div class="mobile-screen" id="scr-student-submit-claim">
+      <div class="mobile-header">
+        <button class="back-btn" onclick="closeClaimForm()">
+          <i data-lucide="chevron-left"></i>
+        </button>
+        <h2>Claim Request</h2>
+        <div style="width: 24px;"></div>
+      </div>
+      <div class="screen-body" style="padding-top:20px;">
+
+        <!-- Item thumbnail review -->
+        <div
+          style="background-color:#FFFFFF; border:1px solid var(--border-color); border-radius:12px; padding:12px; display:flex; align-items:center; gap:12px; margin-bottom:20px; text-align:left;">
+          <img id="claim-item-thumb"
+            style="width:48px; height:48px; border-radius:8px; object-fit:cover; border:1px solid var(--border-color);">
+          <div>
+            <h4 id="claim-item-name" style="font-size:13px; font-weight:700;">Wallet</h4>
+            <p id="claim-item-ref" style="font-size:12px; color:var(--text-muted);">Ref: #LF-0104</p>
+          </div>
+        </div>
+
+        <!-- Stepper Indicator Header -->
+        <div class="stepper-header"
+          style="display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; padding: 0 10px;">
+          <div class="step-indicator-item active" id="step-claim-1"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#1E3A8A; color:#FFFFFF; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">1</span>
+            <span class="step-label" style="font-size:11px; font-weight:600; color:#1E3A8A;">Identity</span>
+          </div>
+          <div class="step-connector"
+            style="height:2px; background-color:var(--border-color); flex:1; margin-bottom:18px;" id="conn-claim-1">
+          </div>
+          <div class="step-indicator-item" id="step-claim-2"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#E2E8F0; color:var(--text-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">2</span>
+            <span class="step-label" style="font-size:11px; font-weight:500; color:var(--text-muted);">Context</span>
+          </div>
+          <div class="step-connector"
+            style="height:2px; background-color:var(--border-color); flex:1; margin-bottom:18px;" id="conn-claim-2">
+          </div>
+          <div class="step-indicator-item" id="step-claim-3"
+            style="display:flex; flex-direction:column; align-items:center; flex:1;">
+            <span class="step-num"
+              style="width:28px; height:28px; border-radius:50%; background-color:#E2E8F0; color:var(--text-muted); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:12px; margin-bottom:4px; transition: all 0.2s ease;">3</span>
+            <span class="step-label" style="font-size:11px; font-weight:500; color:var(--text-muted);">Proof</span>
+          </div>
+        </div>
+
+        <!-- STEP 1: IDENTITY & LINK REPORT -->
+        <div class="stepper-panel" id="step-claim-panel-1">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 1: Enter your student identity details.
+          </p>
+          <div class="form-group">
+            <label for="claim-fullname">Full Name *</label>
+            <input type="text" id="claim-fullname" class="form-control" placeholder="Full Name"
+              value="Aiman bin Abdullah">
+            <div class="field-error-msg" id="err-claim-fullname">Please complete all required fields.</div>
+          </div>
+          <div class="form-group">
+            <label for="claim-matric">Student ID / Matric Number *</label>
+            <input type="text" id="claim-matric" class="form-control" placeholder="e.g. AL230941" value="AL230941">
+            <div class="field-error-msg" id="err-claim-matric">Please enter your student ID.</div>
+          </div>
+          <div class="form-group">
+            <label for="claim-email">Email Address *</label>
+            <input type="email" id="claim-email" class="form-control" placeholder="matric_no@student.ums.edu.my"
+              value="aiman_student@student.ums.edu.my">
+            <div class="field-error-msg" id="err-claim-email">Please enter a valid email address.</div>
+          </div>
+
+          <div class="form-group" id="claim-link-report-group" style="display:none; margin-bottom:16px;">
+            <label for="claim-link-report">Link to active Lost Report (Optional)</label>
+            <select id="claim-link-report" class="form-control">
+              <option value="">-- No linked report (Direct Claim) --</option>
+            </select>
+            <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Linking this closes your lost
+              report once the item is returned.</div>
+          </div>
+
+          <button class="btn btn-primary" onclick="nextClaimStep(1)" style="margin-top:10px;">
+            Next Step
+          </button>
+        </div>
+
+        <!-- STEP 2: LOSS CONTEXT -->
+        <div class="stepper-panel" id="step-claim-panel-2" style="display:none;">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 2: Tell us when and where you lost this item.
+          </p>
+          <div class="form-group">
+            <label for="claim-lost-where">Where did you lose it? *</label>
+            <input type="text" id="claim-lost-where" class="form-control" placeholder="Provide last known area">
+            <div class="field-error-msg" id="err-claim-lost-where">Please specify where you lost the item.</div>
+          </div>
+
+          <div class="form-group" style="display:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap:12px;">
+            <div>
+              <label for="claim-lost-date">When lost? (Date) *</label>
+              <input type="date" id="claim-lost-date" class="form-control">
+              <div class="field-error-msg" id="err-claim-lost-date">Required.</div>
+            </div>
+            <div>
+              <label for="claim-lost-time">Approx. Time *</label>
+              <input type="time" id="claim-lost-time" class="form-control">
+              <div class="field-error-msg" id="err-claim-lost-time">Required.</div>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-top:20px;">
+            <button class="btn btn-secondary" onclick="prevClaimStep(2)" style="flex:1;">Back</button>
+            <button class="btn btn-primary" onclick="nextClaimStep(2)" style="flex:1;">Next Step</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: PROOF OF OWNERSHIP -->
+        <div class="stepper-panel" id="step-claim-panel-3" style="display:none;">
+          <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px; text-align:left;">
+            Step 3: Provide descriptions and upload ownership proof.
+          </p>
+          <div class="form-group">
+            <label for="claim-lost-detail">Unique detail only the owner knows *</label>
+            <textarea id="claim-lost-detail" class="form-control"
+              placeholder="Describe contents, card names, scratches, password..."></textarea>
+            <div class="field-error-msg" id="err-claim-lost-detail">Please describe at least one unique detail about the
+              item.</div>
+          </div>
+
+          <div class="form-group">
+            <label>Upload Proof of Ownership</label>
+            <div class="upload-box" id="upload-claim-photo-box" onclick="triggerUpload('claim')">
+              <i data-lucide="file-up" class="upload-icon" id="icon-upload-claim"></i>
+              <span class="upload-text" id="text-upload-claim">Upload Document/Image</span>
+              <span class="upload-sub" id="sub-upload-claim">Old photo, receipt, screenshot, matric card</span>
+              <img id="preview-claim-img" class="upload-preview-img" style="display:none;">
+              <div id="overlay-claim-remove" class="upload-remove-overlay" style="display:none;"
+                onclick="removeUpload(event, 'claim')">Remove Document</div>
+            </div>
+          </div>
+
+          <div class="info-box">
+            <i data-lucide="shield" style="color: var(--info); width:18px; height:18px; flex-shrink:0;"></i>
+            <p>Your proof will only be reviewed by management.</p>
+          </div>
+
+          <div style="display:flex; gap:12px; margin-top:20px; margin-bottom:20px;">
+            <button class="btn btn-secondary" onclick="prevClaimStep(3)" style="flex:1;">Back</button>
+            <button class="btn btn-primary" onclick="submitClaimRequest()" style="flex:1;">Submit Claim</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 9: CLAIM SUBMITTED SUCCESS -->
+    <div class="mobile-screen" id="scr-student-claim-success">
+      <div class="screen-body success-screen-flex">
+        <div class="success-icon-wrapper" style="background-color: var(--info-bg); color: var(--info);">
+          <i data-lucide="file-check" style="width:36px; height:36px;"></i>
+        </div>
+
+        <h3 style="font-weight: 700; margin-bottom: 12px; color: var(--text-main);">Claim Submitted</h3>
+        <p style="font-size:14px; color:var(--text-muted); line-height:1.4; margin-bottom:32px; padding:0 12px;">
+          Management will review your proof of ownership and update your claim status.
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:12px; width:100%;">
+          <button class="btn btn-primary" onclick="navigateToStudentTab('reports')">
+            Track Claim Status
+          </button>
+          <button class="btn btn-secondary" onclick="navigateToStudentScreen('scr-student-home')">
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 10: MY REPORTS -->
+    <div class="mobile-screen" id="scr-student-reports">
+      <div class="mobile-header"
+        style="flex-direction:column; align-items:stretch; gap:10px; padding-top:16px; padding-bottom:12px; height:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h2>My Reports</h2>
+          <i data-lucide="clipboard-list" style="width:20px; height:20px; color:#1E3A8A;"></i>
+        </div>
+
+        <div class="sub-tabs-bar">
+          <button class="sub-tab-btn active" id="btn-subtab-lost-claims" onclick="setReportsSubTab('lost-claims')">Lost
+            & Claims</button>
+          <button class="sub-tab-btn" id="btn-subtab-found" onclick="setReportsSubTab('found')">Found Items</button>
+        </div>
+      </div>
+
+      <div class="screen-body" id="reports-screen-body">
+        <div id="reports-items-list"></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 11: STATUS TIMELINE -->
+    <div class="mobile-screen" id="scr-student-status-timeline">
+      <div class="mobile-header">
+        <button class="back-btn" onclick="navigateToStudentTab('reports')">
+          <i data-lucide="chevron-left"></i>
+        </button>
+        <h2>Status Timeline</h2>
+        <div style="width: 24px;"></div>
+      </div>
+      <div class="screen-body" style="padding-bottom:100px;">
+        <div
+          style="background-color:#FFFFFF; border:1px solid var(--border-color); border-radius:12px; padding:14px; margin-bottom:20px; text-align:left;">
+          <h4 id="timeline-item-title" style="font-size:14px; font-weight:700;">Wallet</h4>
+          <p id="timeline-item-subtitle" style="font-size:12px; color:var(--text-muted); margin-top:2px;">Type: Lost
+            Report • Filed on 12 June</p>
+        </div>
+
+        <!-- Match Found Interactive Alert Banner -->
+        <div id="timeline-match-banner"
+          style="display:none; background-color: var(--warning-bg); border: 1px solid var(--warning); border-radius: 12px; padding: 14px; margin-bottom: 20px; text-align: left;">
+          <div style="display: flex; gap: 10px; align-items: flex-start;">
+            <i data-lucide="sparkles"
+              style="color: var(--warning); width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px;"></i>
+            <div>
+              <h5 style="font-size: 13px; font-weight: 700; color: #7F5F01; margin-bottom: 4px;">Potential Match Found!
+              </h5>
+              <p style="font-size: 12px; color: #7F5F01; line-height: 1.4; margin-bottom: 10px;">Management has
+                identified a verified found item that matches your lost report. Please review the item to claim it.</p>
+              <button class="btn btn-primary" id="btn-timeline-view-match"
+                style="width: auto; height: 32px; font-size: 11px; padding: 0 12px; background-color: #D97706; border-color: #D97706;">View
+                Matched Item</button>
+            </div>
+          </div>
+        </div>
+
+        <h4 style="font-size:14px; font-weight:700; text-align:left; margin-bottom:12px;">Live Progress Tracking</h4>
+
+        <div class="timeline-container" id="timeline-steps-wrapper">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 12: NOTIFICATIONS -->
+    <div class="mobile-screen" id="scr-student-notifications">
+      <div class="mobile-header"
+        style="flex-direction:column; align-items:stretch; gap:10px; padding-top:16px; padding-bottom:14px; height:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; width: 100%;">
+          <h2>Notifications</h2>
+          <button class="view-all"
+            style="background:transparent; border:none; font-size:12px; font-weight:600; color:#1E3A8A; cursor:pointer;"
+            onclick="markAllNotificationsAsRead()">Mark all read</button>
+        </div>
+        <div class="sub-tabs-bar" style="margin-bottom: 0;">
+          <button class="sub-tab-btn active" id="btn-notif-all" onclick="setNotifFilter('all', this)">All</button>
+          <button class="sub-tab-btn" id="btn-notif-unread" onclick="setNotifFilter('unread', this)">Unread</button>
+          <button class="sub-tab-btn" id="btn-notif-reports" onclick="setNotifFilter('reports', this)">Reports</button>
+          <button class="sub-tab-btn" id="btn-notif-claims" onclick="setNotifFilter('claims', this)">Claims</button>
+        </div>
+      </div>
+
+      <div class="screen-body" id="notifications-screen-body">
+        <div id="notifications-list"></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 13: HELP / PROCESS -->
+    <div class="mobile-screen" id="scr-student-help">
+      <div class="mobile-header">
+        <button class="back-btn" onclick="navigateToStudentScreen('scr-student-home')">
+          <i data-lucide="chevron-left"></i>
+        </button>
+        <h2>Help & Counter Info</h2>
+        <div style="width: 24px;"></div>
+      </div>
+
+      <div class="screen-body" style="text-align:left; padding-bottom:100px;">
+        <h4 style="font-size:14px; font-weight:700; margin-bottom:12px; color:#1E3A8A;">Lost & Found Counter</h4>
+        <div
+          style="background-color:#FFFFFF; border:1px solid var(--border-color); border-radius:12px; padding:16px; margin-bottom:20px; display:flex; flex-direction:column; gap:8px;">
+          <p style="font-size:13px; font-weight:500;"><strong>Location:</strong> <span
+              id="help-counter-location">Student Affairs Office / Security Office</span></p>
+          <p style="font-size:13px; font-weight:500;"><strong>Opening Hours:</strong> Monday - Friday: 8:30 AM - 4:30 PM
+            (Closed on public holidays)</p>
+          <p style="font-size:13px; font-weight:500;"><strong>Email:</strong> <span
+              id="help-counter-email">hep_umskal@ums.edu.my</span></p>
+          <p id="help-counter-instructions-row" style="font-size:13px; font-weight:500; display:none;">
+            <strong>Instructions:</strong> <span id="help-counter-instructions"></span>
+          </p>
+        </div>
+
+        <h4 style="font-size:14px; font-weight:700; margin-bottom:12px; color:#1E3A8A;">System Flow Process</h4>
+        <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:24px;">
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div class="step-badge">1</div>
+            <p style="font-size:13px; color:var(--text-main); line-height:1.4;"><strong>Report lost or found
+                item:</strong> File details with a photo upload.</p>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div class="step-badge">2</div>
+            <p style="font-size:13px; color:var(--text-main); line-height:1.4;"><strong>Found item is handed to
+                management:</strong> Finder must hand it physically to counter.</p>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div class="step-badge">3</div>
+            <p style="font-size:13px; color:var(--text-main); line-height:1.4;"><strong>Management verifies the
+                item:</strong> Admin physically reviews custody.</p>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div class="step-badge">4</div>
+            <p style="font-size:13px; color:var(--text-main); line-height:1.4;"><strong>Owner submits claim with
+                proof:</strong> Real owners identify item and submit proof details.</p>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div class="step-badge">5</div>
+            <p style="font-size:13px; color:var(--text-main); line-height:1.4;"><strong>Management approves the
+                claim:</strong> Admin reviews audits.</p>
+          </div>
+          <div style="display:flex; gap:12px; align-items:flex-start;">
+            <div class="step-badge">6</div>
+            <p style="font-size:13px; color:var(--text-main); line-height:1.4;"><strong>Owner collects item:</strong>
+              Handover completed physically at counter.</p>
+          </div>
+        </div>
+
+        <button class="btn btn-secondary" id="help-contact-btn" onclick="contactAdminEmail()">
+          <i data-lucide="mail"></i> Contact Management Email
+        </button>
+      </div>
+    </div>
+
+    <!-- SCREEN 14: PROFILE PAGE -->
+    <div class="mobile-screen" id="scr-student-profile">
+      <div class="mobile-header">
+        <button class="back-btn" onclick="navigateToStudentScreen('scr-student-home')">
+          <i data-lucide="chevron-left"></i>
+        </button>
+        <h2>My Profile</h2>
+        <div style="width: 24px;"></div>
+      </div>
+
+      <div class="screen-body" style="text-align:left; padding-bottom:100px;">
+        <div class="profile-header-card">
+          <div class="profile-avatar-large" id="profile-avatar-initials">
+            ST
+          </div>
+          <h4 id="profile-display-name" class="profile-name">Student</h4>
+          <div class="verified-badge" style="display: none;">
+            <i data-lucide="shield-check" style="width: 12px; height: 12px; stroke: #de9e26;"></i>
+            <span>Verified Student Account</span>
+          </div>
+          <p id="profile-display-role" class="profile-role">UMSKAL Student Account</p>
+        </div>
+
+        <div class="profile-card">
+          <!-- Full Name Row -->
+          <div class="profile-row">
+            <span class="profile-row-label">Full Name</span>
+            <span class="profile-row-value" id="profile-view-fullname">-</span>
+          </div>
+
+          <!-- Student Matric Number Row -->
+          <div class="profile-row">
+            <span class="profile-row-label">Student Matric Number</span>
+            <span class="profile-row-value" id="profile-view-matric">-</span>
+          </div>
+
+          <!-- Email Address Row -->
+          <div class="profile-row">
+            <span class="profile-row-label">Email Address</span>
+            <span class="profile-row-value" id="profile-view-email">-</span>
+          </div>
+
+          <!-- Phone Number Row (View Mode) -->
+          <div class="profile-row" id="profile-phone-view-container">
+            <span class="profile-row-label">Phone Number</span>
+            <span class="profile-row-value" id="profile-view-phone">-</span>
+          </div>
+
+          <!-- Phone Number Input (Edit Mode - Hidden by default) -->
+          <div class="form-group" id="profile-phone-edit-container" style="display: none; margin-bottom: 0;">
+            <label class="auth-label" for="profile-phone">Phone Number</label>
+            <div class="auth-input-wrapper has-left-icon" style="margin-bottom: 0;">
+              <i data-lucide="phone"></i>
+              <input type="tel" id="profile-phone" class="auth-input" placeholder="e.g. 012-3456789">
+            </div>
+            <div class="field-error-msg" id="err-profile-phone">Please enter your phone number.</div>
+          </div>
+        </div>
+
+        <p class="profile-privacy-note">
+          <i data-lucide="shield-alert" style="width: 13px; height: 13px; margin-right: 6px; stroke: #64748B;"></i>
+          <span>Your registered details are only used by management for lost and found verification.</span>
+        </p>
+
+        <!-- Default view mode actions -->
+        <div id="profile-default-actions">
+          <button class="btn btn-primary" onclick="enableProfileEdit()" style="margin-bottom: 12px; width: 100%;">
+            Edit Contact Details
+          </button>
+
+          <button class="btn btn-secondary" onclick="showChangePasswordModal()"
+            style="margin-bottom: 12px; width: 100%; border-color: var(--border-color); color: var(--text-main);">
+            Change Password
+          </button>
+
+          <button class="btn btn-signout" onclick="studentLogout()"
+            style="display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;">
+            <i data-lucide="log-out" style="width:16px; height:16px;"></i> Sign Out
+          </button>
+        </div>
+
+        <!-- Edit mode actions -->
+        <div id="profile-edit-actions" style="display: none;">
+          <button class="btn btn-primary" onclick="saveStudentProfile()" style="margin-bottom: 12px; width: 100%;">
+            Save Changes
+          </button>
+
+          <button class="btn btn-secondary" onclick="cancelProfileEdit()" style="width: 100%;">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation Bar (Fills mobile viewport bottom, exactly 4 tabs) -->
+    <nav class="mobile-bottom-nav" id="mobile-nav-bar" style="display:none;">
+      <button class="nav-tab active" id="nav-tab-home" onclick="navigateToStudentTab('home')">
+        <i data-lucide="home"></i>
+        <span>Home</span>
+      </button>
+      <button class="nav-tab" id="nav-tab-search" onclick="navigateToStudentTab('search')">
+        <i data-lucide="search"></i>
+        <span>Search</span>
+      </button>
+      <button class="nav-tab" id="nav-tab-reports" onclick="navigateToStudentTab('reports')">
+        <i data-lucide="clipboard-list"></i>
+        <span>My Reports</span>
+      </button>
+      <button class="nav-tab" id="nav-tab-notifications" onclick="navigateToStudentTab('notifications')">
+        <i data-lucide="bell"></i>
+        <span>Notifications</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script src="student.js?v=1.0.8"></script>
+</body>
+
+</html>

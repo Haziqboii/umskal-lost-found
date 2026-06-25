@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-LiSP Parent Portal</title>
+  <link rel="stylesheet" href="student.css?v=3.0">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Top System Bar Mock (Hidden on Desktop styles) -->
+  <div class="mobile-system-bar">
+    <span id="mobile-clock">23:45</span>
+  </div>
+
+  <div class="mobile-content-container">
+    
+    <!-- Desktop Navigation Bar -->
+    <header class="mobile-nav-bar" id="mobile-nav-bar" style="display:none;">
+      <div class="mobile-nav-bar-left">
+        <div style="background: var(--primary); color: white; width: 32px; height: 32px; border-radius: 8px; display:flex; align-items:center; justify-content:center;">
+          <i data-lucide="shield-alert" style="width: 18px; height: 18px;"></i>
+        </div>
+        <h3>K-LiSP</h3>
+      </div>
+      
+      <div class="mobile-nav-bar-tabs">
+        <button class="nav-tab active" id="nav-tab-home" onclick="navigateToParentTab('home')">
+          <i data-lucide="home"></i>
+          <span>Home</span>
+        </button>
+        <button class="nav-tab" id="nav-tab-alerts" onclick="navigateToParentTab('alerts')">
+          <i data-lucide="bell"></i>
+          <span>Alerts</span>
+          <span class="badge-count" id="notif-badge" style="display:none;">0</span>
+        </button>
+        <button class="nav-tab" id="nav-tab-report" onclick="navigateToParentTab('report')">
+          <i data-lucide="alert-triangle"></i>
+          <span>Report Block</span>
+        </button>
+        <button class="nav-tab" id="nav-tab-profile" onclick="navigateToParentTab('profile')">
+          <i data-lucide="user"></i>
+          <span>Profile</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- SCREEN 1: LOGIN -->
+    <div class="mobile-screen active" id="scr-parent-login">
+      <div class="auth-logo-container">
+        <div class="auth-logo-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 13c0 5-3.5 7.5-7.66 9.7a1.01 1.01 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 .76-.97l8-2a1 1 0 0 1 .48 0l8 2A1 1 0 0 1 20 6z"/>
+            <line x1="12" x2="12" y1="8" y2="12"/>
+            <line x1="12" x2="12.01" y1="16" y2="16"/>
+          </svg>
+        </div>
+        <h1 class="auth-title">K-LiSP Parent Portal</h1>
+        <p class="auth-subtitle">Keningau Life Safety Pickup Coordinator</p>
+      </div>
+
+      <div class="auth-card">
+        <div class="form-group">
+          <label for="parent-email">Email Address</label>
+          <input type="email" id="parent-email" class="form-control" placeholder="parent1@gmail.com" value="parent1@gmail.com">
+        </div>
+
+        <div class="form-group">
+          <label for="parent-password">Password</label>
+          <input type="password" id="parent-password" class="form-control" placeholder="••••••••" value="password123">
+        </div>
+
+        <button class="auth-btn" onclick="parentLogin()" style="width: 100%; justify-content: center;">Log In</button>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 24px; text-align: center;">
+        Coordinate school child pick-ups safely during flood risk.
+      </p>
+    </div>
+
+    <!-- SCREEN 2: HOME DASHBOARD -->
+    <div class="mobile-screen" id="scr-parent-home">
+      <div class="mobile-header">
+        <div>
+          <p>Keningau District Route Advisory & Coordinator</p>
+          <h2 id="parent-greeting">Hi, Parent</h2>
+        </div>
+      </div>
+
+      <!-- Child statuses and Response block -->
+      <div class="section-title">My Registered Children</div>
+      <div id="parent-children-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Active Event Details (Conditional) -->
+      <div id="active-event-details-panel" style="display: none;">
+        <div class="section-title">Predefined Route Advisory</div>
+        <div class="status-desc-strip" style="background: rgba(217, 119, 6, 0.05); border: 1px solid rgba(217, 119, 6, 0.15); color: var(--accent);">
+          <i data-lucide="info" style="display:inline-block; width:14px; height:14px; vertical-align:middle; margin-right:4px;"></i>
+          DO route status updates are listed below. Avoid closed/flooded options.
+        </div>
+        <div class="routes-container" id="parent-routes-advisory-list">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: ALERTS & NOTIFICATIONS -->
+    <div class="mobile-screen" id="scr-parent-alerts">
+      <div class="mobile-header">
+        <div>
+          <p>Emergency Notifications Feed</p>
+          <h2>Inbox Alerts</h2>
+        </div>
+        <button class="btn btn-secondary" onclick="markAllNotificationsAsRead()" style="background:none; border:none; color:var(--info); font-size:12px; font-weight:700; cursor:pointer;">
+          Mark all read
+        </button>
+      </div>
+
+      <div class="section-title">Notification History</div>
+      <div id="parent-notifications-list" style="display:flex; flex-direction:column; gap:10px;">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- SCREEN 4: REPORT ROAD BLOCK -->
+    <div class="mobile-screen" id="scr-parent-report-road">
+      <div class="mobile-header">
+        <div>
+          <p>Provide Road Block Feedback to DO</p>
+          <h2>Report Road Blockage</h2>
+        </div>
+      </div>
+
+      <div class="auth-card" style="text-align: left; padding: 28px; max-width: 600px; margin: 0 auto;">
+        <div class="form-group">
+          <label for="report-select-route">Select Predefined Route</label>
+          <select id="report-select-route" class="form-control">
+            <!-- Populated dynamically -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="report-issue-desc">Observations / Specific Road Situation</label>
+          <textarea id="report-issue-desc" class="form-control" placeholder="E.g., Bridge is flooded, water too deep for small vehicles." style="height: 100px; resize: none;"></textarea>
+        </div>
+
+        <button class="auth-btn" onclick="submitRoadBlockReport()" style="width:100%; justify-content:center;">Submit Report</button>
+      </div>
+      
+      <div class="status-desc-strip" style="margin-top: 16px; font-size: 13px; max-width:600px; margin-left:auto; margin-right:auto;">
+        <i data-lucide="alert-triangle" style="display:inline-block; width:13px; height:13px; vertical-align:middle; margin-right:4px; color:var(--accent);"></i>
+        Reports are sent to the District Office (DO). When 3 or more parents report blocks on the same route during the active event, it flags a high-priority review notice.
+      </div>
+
+      <!-- Active Reports History -->
+      <div style="max-width: 600px; margin: 24px auto 0 auto; text-align: left;">
+        <h3 style="font-size: 16px; font-weight: 700; margin-bottom: 12px; border-bottom: 2px solid var(--border-color); padding-bottom: 6px;">Active Reports History</h3>
+        <div id="parent-active-reports-container" style="display: flex; flex-direction: column; gap: 10px;">
+          <!-- Loaded dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: PROFILE -->
+    <div class="mobile-screen" id="scr-parent-profile">
+      <div class="mobile-header">
+        <div>
+          <p>Guardian Account</p>
+          <h2>My Profile Details</h2>
+        </div>
+      </div>
+
+      <div class="profile-avatar-circle" id="parent-avatar-initials">P</div>
+      <h3 style="text-align:center; font-weight:700;" id="parent-profile-name">Parent Name</h3>
+      <p style="text-align:center; font-size:13px; color:var(--text-muted); margin-bottom: 20px;">Guardian Account</p>
+
+      <div class="profile-card-details">
+        <div class="profile-field">
+          <span>IC Number</span>
+          <strong id="profile-parent-ic">831102-12-6111</strong>
+        </div>
+        <div class="profile-field">
+          <span>Phone Contact</span>
+          <strong id="profile-parent-phone">010-8204841</strong>
+        </div>
+        <div class="profile-field">
+          <span>Email Address</span>
+          <strong id="profile-parent-email">parent1@gmail.com</strong>
+        </div>
+        <div class="profile-field" style="border-bottom:none;">
+          <span>User Designation</span>
+          <strong>Parent / Guardian</strong>
+        </div>
+      </div>
+
+      <button class="auth-btn" onclick="parentLogout()" style="margin-top: 24px; background: #DC2626; color: white; width:100%; max-width:200px; margin-left:auto; margin-right:auto; display:block; text-align:center; justify-content:center;">Log Out</button>
+    </div>
+
+    <!-- MODAL: SUBMIT PICKUP RESPONSE -->
+    <div class="modal-overlay" id="response-modal">
+      <div class="modal-card">
+        <div class="modal-header">Submit School Pickup Response</div>
+        <div class="modal-body">
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;" id="response-event-school-text">
+            Submit responses for active pickup event. This response applies automatically to all your linked children.
+          </p>
+
+          <div class="form-group">
+            <label>Response Options</label>
+            <div class="options-grid">
+              <button class="option-btn" id="opt-on-the-way" onclick="setResponseSelection('on_the_way')">
+                <i data-lucide="car"></i> I am On The Way
+              </button>
+              <button class="option-btn" id="opt-delayed" onclick="setResponseSelection('delayed')">
+                <i data-lucide="clock"></i> I will be Delayed
+              </button>
+              <button class="option-btn" id="opt-blocked" onclick="setResponseSelection('blocked')">
+                <i data-lucide="alert-triangle"></i> Routes are Blocked
+              </button>
+              <button class="option-btn" id="opt-cannot-come" onclick="setResponseSelection('cannot_come')">
+                <i data-lucide="x-circle"></i> Cannot Come Now
+              </button>
+              <button class="option-btn" id="opt-guardian" onclick="setResponseSelection('guardian')">
+                <i data-lucide="user-check"></i> Alternate Guardian coming
+              </button>
+            </div>
+          </div>
+
+          <!-- Conditional fields -->
+          <div class="form-group" id="group-select-route" style="display:none;">
+            <label for="response-select-route">Select Travel Route</label>
+            <select id="response-select-route" class="form-control">
+              <!-- Prepopulated -->
+            </select>
+          </div>
+
+          <div class="form-group" id="group-guardian-note" style="display:none;">
+            <label for="response-guardian-name">Guardian Full Name & IC</label>
+            <input type="text" id="response-guardian-name" class="form-control" placeholder="E.g., Ahmad bin Daud (780210-12-8888)">
+          </div>
+        </div>
+        <div style="display:flex; gap:12px; justify-content:flex-end;">
+          <button class="btn btn-secondary" onclick="closeResponseModal()">Cancel</button>
+          <button class="auth-btn" onclick="submitParentResponse()">Submit Response</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="student.js?v=3.0"></script>
+</body>
+</html>

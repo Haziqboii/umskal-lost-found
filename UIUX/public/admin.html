@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UMSKAL Lost & Found - Admin Portal</title>
+  <link rel="stylesheet" href="admin.css?v=1.0.9">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+  <!-- ADMIN LOGIN VIEWPORT -->
+  <div class="admin-login-wrapper" id="admin-login-container">
+    <div class="admin-login-card">
+      <img src="logo1.png" class="brand-logo"
+        style="margin: 0 auto 16px auto; width: 56px; height: 56px; object-fit: contain; background: white; padding: 2px;"
+        alt="Logo">
+      <h2 style="font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 8px;">UMSKAL Lost & Found</h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">Authorized management access only.</p>
+
+      <div class="form-group">
+        <label for="adm-email">Admin Email</label>
+        <input type="email" id="adm-email" class="form-control" placeholder="staff_id@ums.edu.my"
+          value="dahlan_hep@ums.edu.my">
+      </div>
+      <div class="form-group">
+        <label for="adm-password">Password</label>
+        <input type="password" id="adm-password" class="form-control" placeholder="••••••••" value="admin123">
+      </div>
+
+      <button class="btn btn-primary" onclick="adminLogin()" style="margin-top: 12px;">
+        Log In
+      </button>
+    </div>
+  </div>
+
+  <!-- MAIN DOCK VIEWPORT -->
+  <div class="admin-viewport" id="admin-main-container" style="display:none;">
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <img src="logo1.png" class="brand-logo" style="object-fit: contain; background: white; padding: 2px;"
+          alt="Logo">
+        <div class="brand-details">
+          <h3>UMSKAL Admin</h3>
+          <span>Management Portal</span>
+        </div>
+      </div>
+
+      <ul class="admin-sidebar-menu">
+        <li>
+          <button class="sidebar-item-btn active" id="adm-menu-dash" onclick="navigateToAdminScreen('adm-scr-dash')">
+            <i data-lucide="layout-dashboard"></i> Dashboard
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-item-btn" id="adm-menu-found" onclick="navigateToAdminScreen('adm-scr-found-verify')">
+            <i data-lucide="shield-check"></i> Found Items Management
+            <span class="badge-dot" id="badge-count-pending-found">0</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-item-btn" id="adm-menu-lost" onclick="navigateToAdminScreen('adm-scr-lost')">
+            <i data-lucide="search-code"></i> Lost Reports
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-item-btn" id="adm-menu-claims" onclick="navigateToAdminScreen('adm-scr-claims')">
+            <i data-lucide="file-text"></i> Claim Requests
+            <span class="badge-dot" id="badge-count-pending-claims">0</span>
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-item-btn" id="adm-menu-records" onclick="navigateToAdminScreen('adm-scr-records')">
+            <i data-lucide="history"></i> Returned Items
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-item-btn" id="adm-menu-logs" onclick="navigateToAdminScreen('adm-scr-logs')">
+            <i data-lucide="clipboard-list"></i> Notifications / Activity
+          </button>
+        </li>
+        <li>
+          <button class="sidebar-item-btn" id="adm-menu-settings" onclick="navigateToAdminScreen('adm-scr-settings')">
+            <i data-lucide="settings"></i> Settings
+          </button>
+        </li>
+      </ul>
+
+      <div class="admin-sidebar-footer"
+        style="display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%;">
+        <div style="display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0;">
+          <div class="admin-avatar">AD</div>
+          <div class="admin-info" style="min-width: 0; flex: 1;">
+            <span class="name"
+              style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Admin
+              Dahlan</span>
+            <span class="role"
+              style="display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">Student Affairs
+              (HEP)</span>
+          </div>
+        </div>
+        <button class="logout-icon-btn" onclick="adminLogout()" title="Logout">
+          <i data-lucide="log-out" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <div style="display: flex; flex-direction: column; text-align: left;">
+          <h1 id="admin-topbar-title">Dashboard Overview</h1>
+          <p id="admin-topbar-subtitle" style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Monitor pending reports, claim reviews, verified items, and recent system activity.</p>
+        </div>
+        <div class="admin-topbar-actions">
+          <div class="admin-topbar-profile" style="text-align: right; display: flex; flex-direction: column; gap: 2px;">
+            <span style="font-size: 14px; font-weight: 700; color: var(--text-main);">HEP Officer</span>
+            <span style="font-size: 11px; font-weight: 600; color: var(--text-muted);">Management Admin</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-content-area">
+
+        <!-- ADMIN DASHBOARD PANEL -->
+        <div class="admin-screen" id="adm-scr-dash">
+          <div class="admin-grid-kpis">
+            <!-- PENDING FOUND REPORTS -->
+            <div class="kpi-card" onclick="navigateToAdminScreen('adm-scr-found-verify')">
+              <div class="kpi-card-top">
+                <h4>Pending Found Reports</h4>
+                <div class="kpi-icon-wrapper kpi-amber">
+                  <i data-lucide="package"></i>
+                </div>
+              </div>
+              <div class="kpi-card-middle">
+                <div class="value" id="kpi-pending-found">0</div>
+                <div class="kpi-desc" id="kpi-desc-found">Requires item handover verification</div>
+              </div>
+              <div class="kpi-card-bottom">
+                <button class="kpi-action-btn">
+                  <span>View Reports</span> <i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- PENDING CLAIMS -->
+            <div class="kpi-card" onclick="navigateToAdminScreen('adm-scr-claims')">
+              <div class="kpi-card-top">
+                <h4>Pending Claims</h4>
+                <div class="kpi-icon-wrapper kpi-blue">
+                  <i data-lucide="file-check"></i>
+                </div>
+              </div>
+              <div class="kpi-card-middle">
+                <div class="value" id="kpi-pending-claims">0</div>
+                <div class="kpi-desc" id="kpi-desc-claims">Claims waiting for review</div>
+              </div>
+              <div class="kpi-card-bottom">
+                <button class="kpi-action-btn">
+                  <span>Review Claims</span> <i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- VERIFIED ITEMS -->
+            <div class="kpi-card" onclick="navigateToAdminScreen('adm-scr-found-verify')">
+              <div class="kpi-card-top">
+                <h4>Verified Items</h4>
+                <div class="kpi-icon-wrapper kpi-green">
+                  <i data-lucide="shield-check"></i>
+                </div>
+              </div>
+              <div class="kpi-card-middle">
+                <div class="value" id="kpi-verified-items">0</div>
+                <div class="kpi-desc" id="kpi-desc-verified">Items available for claim</div>
+              </div>
+              <div class="kpi-card-bottom">
+                <button class="kpi-action-btn">
+                  <span>View Items</span> <i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- RETURNED ITEMS -->
+            <div class="kpi-card" onclick="navigateToAdminScreen('adm-scr-records')">
+              <div class="kpi-card-top">
+                <h4>Returned Items</h4>
+                <div class="kpi-icon-wrapper kpi-navy">
+                  <i data-lucide="check-circle"></i>
+                </div>
+              </div>
+              <div class="kpi-card-middle">
+                <div class="value" id="kpi-returned-items">0</div>
+                <div class="kpi-desc" id="kpi-desc-returned">Items returned to owners</div>
+              </div>
+              <div class="kpi-card-bottom">
+                <button class="kpi-action-btn">
+                  <span>View Records</span> <i data-lucide="chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Activity Log Section -->
+          <div class="admin-card-section">
+            <div class="admin-card-header">
+              <h3>Recent Activity</h3>
+              <a href="#" onclick="navigateToAdminScreen('adm-scr-logs'); return false;" class="view-all-link" style="font-size: 13px; font-weight: 600; color: #1E3A8A; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+                View All Logs <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+              </a>
+            </div>
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th style="width:180px;">Time</th>
+                    <th>Activity Details</th>
+                    <th>Event Category</th>
+                    <th>Reference</th>
+                    <th style="width:100px; text-align:center;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-dash-feed-rows">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- FOUND VERIFICATION SCREEN (Renamed to Found Items Management) -->
+        <div class="admin-screen" id="adm-scr-found-verify" style="display:none;">
+          <div class="admin-card-section">
+            <div class="admin-card-header" style="border-bottom: none; padding-bottom: 0;">
+              <h3>Found Items Management</h3>
+            </div>
+
+            <!-- Sub-tab Navigation -->
+            <div class="admin-tab-nav">
+              <button class="admin-tab-btn active" id="tab-found-pending" onclick="switchFoundSubTab('pending')">
+                Pending Verification
+              </button>
+              <button class="admin-tab-btn" id="tab-found-verified" onclick="switchFoundSubTab('verified')">
+                Verified Inventory
+              </button>
+            </div>
+
+            <!-- PANEL 1: PENDING VERIFICATION -->
+            <div id="panel-found-pending-verify">
+              <div
+                style="padding:16px 24px; display:flex; gap:16px; align-items:center; border-bottom:1px solid var(--border-color); background-color:#F8FAFC;">
+                <div style="font-size:13px; font-weight:600; color:var(--text-muted);">Filters:</div>
+                <input type="text" id="flt-found-search" class="form-control" placeholder="Search by name..."
+                  style="width:200px; height:36px; padding:0 10px; font-size:13px;" oninput="renderFoundQueue()">
+                <select id="flt-found-cat" class="form-control"
+                  style="width:180px; height:36px; padding:0 10px; font-size:13px;" onchange="renderFoundQueue()">
+                  <option value="">All Categories</option>
+                  <option value="Matric Card">Matric Cards</option>
+                  <option value="Wallet">Wallets</option>
+                  <option value="Keys">Keys</option>
+                  <option value="Bottle">Bottles</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Bag">Bags</option>
+                  <option value="Books">Books</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+
+              <div class="table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Item Photo</th>
+                      <th>Item Name</th>
+                      <th>Category</th>
+                      <th>Found Location</th>
+                      <th>Submitted By</th>
+                      <th>Date Submitted</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-pending-found-rows">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 2: VERIFIED INVENTORY -->
+            <div id="panel-found-verified-inventory" style="display:none;">
+              <div
+                style="padding:16px 24px; display:flex; gap:16px; align-items:center; border-bottom:1px solid var(--border-color); background-color:#F8FAFC;">
+                <div style="font-size:13px; font-weight:600; color:var(--text-muted);">Filters:</div>
+                <input type="text" id="flt-verified-search" class="form-control" placeholder="Search by name..."
+                  style="width:200px; height:36px; padding:0 10px; font-size:13px;" oninput="renderVerifiedInventory()">
+                <select id="flt-verified-cat" class="form-control"
+                  style="width:180px; height:36px; padding:0 10px; font-size:13px;"
+                  onchange="renderVerifiedInventory()">
+                  <option value="">All Categories</option>
+                  <option value="Matric Card">Matric Cards</option>
+                  <option value="Wallet">Wallets</option>
+                  <option value="Keys">Keys</option>
+                  <option value="Bottle">Bottles</option>
+                  <option value="Electronics">Electronics</option>
+                  <option value="Bag">Bags</option>
+                  <option value="Books">Books</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+
+              <div class="table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Ref No</th>
+                      <th>Item Photo</th>
+                      <th>Item Name</th>
+                      <th>Category</th>
+                      <th>Found Location</th>
+                      <th>Date Verified</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-verified-inventory-rows">
+                    <!-- Rendered dynamically -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- FOUND ITEM INTAKE DETAILS FORM -->
+        <div class="admin-screen" id="adm-scr-found-detail" style="display:none;">
+          <!-- Breadcrumb Navigation -->
+          <div class="admin-breadcrumbs"
+            style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+            <span style="cursor: pointer; font-weight: 500;"
+              onclick="navigateToAdminScreen('adm-scr-dash')">Dashboard</span>
+            <span>/</span>
+            <span style="cursor: pointer; font-weight: 500;"
+              onclick="navigateToAdminScreen('adm-scr-found-verify')">Found Items Management</span>
+            <span>/</span>
+            <span style="font-weight: 600; color: var(--text-main);">Verify Item</span>
+          </div>
+
+          <button class="btn btn-back" onclick="navigateToAdminScreen('adm-scr-found-verify')"
+            style="margin-bottom: 12px;">
+            <i data-lucide="arrow-left"></i> Back to List
+          </button>
+
+          <div class="admin-detail-split">
+            <div class="admin-detail-info-block">
+              <h3>Verify Found Item</h3>
+
+              <div class="img-wrapper">
+                <img id="admin-verify-item-img" onclick="openImageLightbox(this.src)">
+              </div>
+
+              <div class="admin-field-row">
+                <span class="admin-field-label">Item Name</span>
+                <strong class="admin-field-val" id="admin-verify-item-name">Black leather wallet</strong>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Category</span>
+                <span class="admin-field-val" id="admin-verify-item-category">Wallet</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Found Location</span>
+                <span class="admin-field-val" id="admin-verify-item-location">Library level 1</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Date Found</span>
+                <span class="admin-field-val" id="admin-verify-item-datetime">12 June 2026</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Finder Name</span>
+                <span class="admin-field-val" id="admin-verify-item-finder">Aiman Abdullah</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Finder Student ID</span>
+                <span class="admin-field-val" id="admin-verify-item-finder-id">AL230941</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Description</span>
+                <span class="admin-field-val" id="admin-verify-item-desc">No cash.</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Status</span>
+                <span class="admin-field-val" id="admin-verify-item-status">Awaiting Handover</span>
+              </div>
+            </div>
+
+            <div class="admin-action-card-panel">
+              <h4>Handover Verification</h4>
+
+              <div style="font-size: 13px; font-weight:600; color:var(--text-main); margin-bottom:12px;">Verification
+                Audit:</div>
+              <label class="checkbox-option">
+                <input type="checkbox" id="chk-intake-verify" onchange="updateIntakeChecklist()">
+                <span>Confirm physical receipt, photo matches, and secure shelf storage</span>
+              </label>
+
+              <div style="margin-top:28px; display:flex; flex-direction:column; gap:12px;">
+                <button class="btn btn-primary" id="btn-admin-approve-item" onclick="approveFoundItem()" disabled>
+                  Approve Item
+                </button>
+                <button class="btn btn-danger" id="btn-admin-reject-item" onclick="rejectFoundItem()"
+                  style="display: inline-flex !important; opacity: 1 !important; visibility: visible !important; height: 40px !important; background-color: #DC2626 !important; border-color: #DC2626 !important; color: #FFFFFF !important;">
+                  Reject Item
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LOST REPORTS LIST SCREEN -->
+        <div class="admin-screen" id="adm-scr-lost" style="display:none;">
+          <div class="admin-card-section">
+            <div class="admin-card-header">
+              <h3>Lost Report List</h3>
+              <p class="admin-subtitle">Monitor missing item records reported by students.</p>
+            </div>
+
+            <!-- Filters Bar -->
+            <div
+              style="padding:16px 24px; display:flex; gap:16px; align-items:center; border-bottom:1px solid var(--border-color); background-color:#F8FAFC;">
+              <div style="font-size:13px; font-weight:600; color:var(--text-muted);">Filters:</div>
+              <input type="text" id="flt-lost-search" class="form-control" placeholder="Search by name..."
+                style="width:200px; height:36px; padding:0 10px; font-size:13px;" oninput="renderLostQueue()">
+              <select id="flt-lost-cat" class="form-control"
+                style="width:180px; height:36px; padding:0 10px; font-size:13px;" onchange="renderLostQueue()">
+                <option value="">All Categories</option>
+                <option value="Matric Card">Matric Cards</option>
+                <option value="Wallet">Wallets</option>
+                <option value="Keys">Keys</option>
+                <option value="Bottle">Bottles</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Bag">Bags</option>
+                <option value="Books">Books</option>
+                <option value="Others">Others</option>
+              </select>
+              <select id="flt-lost-status" class="form-control"
+                style="width:180px; height:36px; padding:0 10px; font-size:13px;" onchange="renderLostQueue()">
+                <option value="">All Statuses</option>
+                <option value="Submitted">Submitted</option>
+                <option value="Possible Match Found">Possible Match Found</option>
+                <option value="Claim Pending">Claim Pending</option>
+                <option value="Ready for Collection">Ready for Collection</option>
+              </select>
+            </div>
+
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Photo</th>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Last Seen Location</th>
+                    <th>Date Lost</th>
+                    <th>Time Lost</th>
+                    <th>Status</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-lost-reports-rows">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLAIM REQUESTS SCREEN -->
+        <div class="admin-screen" id="adm-scr-claims" style="display:none;">
+          <div class="admin-card-section">
+            <div class="admin-card-header">
+              <h3>Claim Submissions</h3>
+            </div>
+
+            <div
+              style="padding:16px 24px; display:flex; gap:16px; align-items:center; border-bottom:1px solid var(--border-color); background-color:#F8FAFC;">
+              <div style="font-size:13px; font-weight:600; color:var(--text-muted);">Filters:</div>
+              <input type="text" id="flt-claim-search" class="form-control" placeholder="Search by name or item..."
+                style="width:220px; height:36px; padding:0 10px; font-size:13px;" oninput="renderClaimsQueue()">
+              <select id="flt-claim-status" class="form-control"
+                style="width:180px; height:36px; padding:0 10px; font-size:13px;" onchange="renderClaimsQueue()">
+                <option value="">All Statuses</option>
+                <option value="Under Review">Under Review</option>
+                <option value="Ready for Collection">Ready for Collection</option>
+                <option value="Returned">Returned</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Claimant Name</th>
+                    <th>Student ID</th>
+                    <th>Item Name</th>
+                    <th>Date Submitted</th>
+                    <th>Claim Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-pending-claims-rows">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- CLAIM PROOF EVALUATION FORM -->
+        <div class="admin-screen" id="adm-scr-claim-detail" style="display:none;">
+          <!-- Breadcrumb Navigation -->
+          <div class="admin-breadcrumbs"
+            style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
+            <span style="cursor: pointer; font-weight: 500;"
+              onclick="navigateToAdminScreen('adm-scr-dash')">Dashboard</span>
+            <span>/</span>
+            <span style="cursor: pointer; font-weight: 500;" onclick="navigateToAdminScreen('adm-scr-claims')">Claim
+              Submissions</span>
+            <span>/</span>
+            <span style="font-weight: 600; color: var(--text-main);">Ownership Claim Review</span>
+          </div>
+
+          <button class="btn btn-back" onclick="navigateToAdminScreen('adm-scr-claims')">
+            <i data-lucide="arrow-left"></i> Back to List
+          </button>
+
+          <div class="admin-detail-split">
+            <!-- Left Side: Found Item details -->
+            <div class="admin-detail-info-block">
+              <h3 style="margin-bottom:16px; border-bottom: 1px solid var(--border-color); padding-bottom:10px;">Found
+                Item Details</h3>
+
+              <div class="matched-item-badge">
+                <img id="admin-claim-item-thumb">
+                <div style="text-align:left;">
+                  <h4 id="admin-claim-item-name" style="font-size:14px;">Wallet</h4>
+                  <p id="admin-claim-item-ref" style="font-size:12px; color:var(--text-muted);">Ref: #LF-0104</p>
+                </div>
+              </div>
+
+              <div class="admin-field-row"
+                style="flex-direction:column; gap:8px; margin-bottom:16px; border-bottom: none; align-items:center;">
+                <span class="admin-field-label"
+                  style="width:100%; text-align:center; font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">Found
+                  Item Image</span>
+                <img id="admin-claim-item-img" class="img-proof-viewport" onclick="openImageLightbox(this.src)">
+              </div>
+
+              <div class="admin-field-row">
+                <span class="admin-field-label">Category</span>
+                <span class="admin-field-val" id="admin-verify-claim-category">Wallet</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Found Location</span>
+                <span class="admin-field-val" id="admin-verify-claim-location">Library level 1</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Date Found</span>
+                <span class="admin-field-val" id="admin-verify-claim-date">12 June 2026</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Admin Notes</span>
+                <span class="admin-field-val" id="admin-verify-claim-notes">Intake matched and locked.</span>
+              </div>
+            </div>
+
+            <!-- Right Side: Claimant Proof -->
+            <div class="admin-detail-info-block">
+              <h3 style="margin-bottom:16px; border-bottom: 1px solid var(--border-color); padding-bottom:10px;">
+                Claimant Proof</h3>
+
+              <div class="admin-field-row">
+                <span class="admin-field-label">Full Name</span>
+                <strong class="admin-field-val" id="admin-claim-student-name">Aiman bin Abdullah</strong>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Student ID</span>
+                <span class="admin-field-val" id="admin-claim-student-matric">AL230941</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Email</span>
+                <span class="admin-field-val" id="admin-claim-student-email">aiman_student@student.ums.edu.my</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">Where Lost</span>
+                <span class="admin-field-val" id="admin-claim-lost-where">DK 3 bench lobby</span>
+              </div>
+              <div class="admin-field-row">
+                <span class="admin-field-label">When Lost</span>
+                <span class="admin-field-val" id="admin-claim-lost-datetime">12 June 2026</span>
+              </div>
+              <div class="verification-evidence-block">
+                <div class="verification-evidence-title">Verification Evidence</div>
+                <div class="verification-evidence-label">Unique Detail Answer</div>
+                <div class="verification-evidence-hint">Compare this answer with the hidden item details before
+                  approving the claim.</div>
+                <div class="answers-box" id="admin-claim-unique-desc">Card name Aiman Abdullah.</div>
+              </div>
+              <div class="admin-field-row" style="flex-direction:column; gap:8px; align-items:center;">
+                <span class="admin-field-label"
+                  style="width:100%; text-align:center; font-size:12px; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.05em;">Uploaded
+                  Proof</span>
+                <img id="admin-claim-proof-img" class="img-proof-viewport" onclick="openImageLightbox(this.src)">
+              </div>
+
+              <!-- Review checklists and action block -->
+              <div style="margin-top:24px; border-top:1px solid var(--border-color); padding-top:20px;">
+                <h4 style="font-size:14px; font-weight:700; margin-bottom:12px;">Auditing Verification</h4>
+                <label class="checkbox-option">
+                  <input type="checkbox" id="chk-claim-verify" onchange="updateClaimChecklist()">
+                  <span>Confirm student identity is verified and ownership proof is validated</span>
+                </label>
+
+                <div class="form-group" style="margin-top:16px;">
+                  <label for="admin-claim-note-input">Reason / internal note</label>
+                  <input type="text" id="admin-claim-note-input" class="form-control"
+                    placeholder="Add rejection reason or pickup instructions...">
+                </div>
+
+                <div style="margin-top:16px; display:flex; gap:12px;">
+                  <button class="btn btn-primary" id="btn-admin-approve-claim" onclick="approveClaimRequest()" disabled
+                    style="flex:1;">
+                    Approve Claim
+                  </button>
+                  <button class="btn btn-danger" onclick="rejectClaimRequest()"
+                    style="flex:1; display: inline-flex !important; opacity: 1 !important; visibility: visible !important; background-color: #DC2626 !important; border-color: #DC2626 !important; color: #FFFFFF !important;">
+                    Reject Claim
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HISTORICAL LOG RECORDS -->
+        <div class="admin-screen" id="adm-scr-records" style="display:none;">
+          <div class="admin-card-section">
+            <div class="admin-card-header" style="padding: 20px 24px;">
+              <div style="text-align:left;">
+                <h3>Returned Items Record</h3>
+                <p class="admin-subtitle">View history of verified items returned to owners.</p>
+              </div>
+              <button class="btn btn-print" onclick="window.print()">
+                <i data-lucide="printer" style="width:16px; height:16px;"></i> Export PDF Log
+              </button>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="admin-filters-bar"
+              style="padding:16px 24px; display:flex; gap:16px; align-items:center; border-bottom:1px solid var(--border-color); background-color:#F8FAFC;">
+              <div style="font-size:13px; font-weight:600; color:var(--text-muted);">Filters:</div>
+              <input type="text" id="flt-returned-search" class="form-control"
+                placeholder="Search by name, owner, ID..."
+                style="width:220px; height:36px; padding:0 10px; font-size:13px;" oninput="renderLogs()">
+              <select id="flt-returned-cat" class="form-control"
+                style="width:180px; height:36px; padding:0 10px; font-size:13px;" onchange="renderLogs()">
+                <option value="">All Categories</option>
+                <option value="Matric Card">Matric Cards</option>
+                <option value="Wallet">Wallets</option>
+                <option value="Keys">Keys</option>
+                <option value="Bottle">Bottles</option>
+                <option value="Electronics">Electronics</option>
+                <option value="Bag">Bags</option>
+                <option value="Books">Books</option>
+                <option value="Others">Others</option>
+              </select>
+            </div>
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Owner Name</th>
+                    <th>Student ID</th>
+                    <th>Returned Date</th>
+                    <th>Admin In Charge</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-returned-records-rows">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- SYSTEM LOGS / ACTIVITY FEED SCREEN -->
+        <div class="admin-screen" id="adm-scr-logs" style="display:none;">
+          <div class="admin-card-section">
+            <div class="admin-card-header" style="border-bottom: none; padding-bottom: 0;">
+              <h3>Notifications / Activity Logs</h3>
+              <p class="admin-subtitle">Historical list of all system transactions.</p>
+            </div>
+
+            <!-- Filters Bar -->
+            <div class="admin-filters-bar"
+              style="padding:16px 24px; display:flex; gap:16px; align-items:center; border-bottom:1px solid var(--border-color); background-color:#F8FAFC;">
+              <div style="font-size:13px; font-weight:600; color:var(--text-muted);">Filters:</div>
+              <input type="text" id="flt-log-search" class="form-control"
+                placeholder="Search activity, item name, student ID, or reference ID..."
+                style="width:380px; height:36px; padding:0 10px; font-size:13px;" oninput="resetLogsLimitAndRender()">
+              <select id="flt-log-cat" class="form-control"
+                style="width:200px; height:36px; padding:0 10px; font-size:13px;" onchange="resetLogsLimitAndRender()">
+                <option value="">All Categories</option>
+                <option value="Found Report">Found Report</option>
+                <option value="Lost Report">Lost Report</option>
+                <option value="Verification">Verification</option>
+                <option value="Claim Request">Claim Request</option>
+                <option value="Claim Approval">Claim Approval</option>
+                <option value="Match Suggestion">Match Suggestion</option>
+                <option value="Item Returned">Item Returned</option>
+                <option value="Rejection">Rejection</option>
+              </select>
+            </div>
+
+            <div class="table-container">
+              <table class="admin-table" style="border-collapse: collapse;">
+                <thead>
+                  <tr>
+                    <th style="width:200px; padding-left:24px;">Time</th>
+                    <th>Activity Details</th>
+                    <th>Event Category</th>
+                    <th>Reference</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-activity-logs-rows">
+                  <!-- Loaded dynamically -->
+                </tbody>
+              </table>
+            </div>
+
+            <div id="logs-load-more-container"
+              style="padding:16px; text-align:center; border-top:1px solid var(--border-color); background-color:#F8FAFC; display:none;">
+              <button class="btn btn-secondary" onclick="loadMoreLogs()"
+                style="width:auto; padding:8px 24px; font-size:13px;">Load More</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SETTINGS SCREEN -->
+        <div class="admin-screen" id="adm-scr-settings" style="display:none;">
+          <div class="admin-card-section" style="padding:24px 32px; text-align:left;">
+            <h3 style="margin-bottom:8px; color:var(--primary); font-weight:700; font-size: 22px;">System Settings</h3>
+            <p
+              style="font-size:14px; color:var(--text-muted); margin-bottom:28px; border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+              Configure lost and found counter details, item categories, campus locations, and officer information.
+            </p>
+
+            <!-- SECTION 1: Lost & Found Counter -->
+            <div style="margin-bottom:28px; max-width: 600px;">
+              <h4
+                style="font-size:15px; font-weight:700; color:var(--text-main); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                <i data-lucide="map-pin" style="width:18px; height:18px; color:var(--primary);"></i> Lost & Found
+                Counter
+              </h4>
+              <div class="form-group">
+                <label for="set-counter-loc">Counter Location</label>
+                <input type="text" id="set-counter-loc" class="form-control" placeholder="e.g. Student Affairs Office"
+                  style="max-width:500px;">
+              </div>
+              <div class="form-group">
+                <label for="set-counter-instructions">Collection Instructions</label>
+                <textarea id="set-counter-instructions" class="form-control"
+                  placeholder="Instructions shown to students..."
+                  style="max-width:500px; height:80px; resize:none; padding:10px;"></textarea>
+              </div>
+            </div>
+
+            <hr style="margin:24px 0; border:none; border-top:1px solid var(--border-color);">
+
+            <!-- SECTION 2: Item Categories -->
+            <div style="margin-bottom:28px; max-width: 600px;">
+              <h4
+                style="font-size:15px; font-weight:700; color:var(--text-main); margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+                <i data-lucide="tag" style="width:18px; height:18px; color:var(--primary);"></i> Item Categories
+              </h4>
+              <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Manage categories used in report
+                forms and dashboard filters.</p>
+
+              <div class="settings-tags-container" id="settings-categories-list"
+                style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom:16px;">
+                <!-- Dynamically loaded pills -->
+              </div>
+              <div style="display:flex; gap:8px; max-width:400px;">
+                <input type="text" id="set-new-category" class="form-control" placeholder="Add new category..."
+                  style="height:36px;">
+                <button class="btn admin-table-action-btn-navy-solid" onclick="addSettingCategory()"
+                  style="height:36px; width:auto; padding:0 16px; font-size:13px; white-space:nowrap; border-radius:6px; cursor:pointer;">Add
+                  Category</button>
+              </div>
+            </div>
+
+            <hr style="margin:24px 0; border:none; border-top:1px solid var(--border-color);">
+
+            <!-- SECTION 3: Campus Locations -->
+            <div style="margin-bottom:28px; max-width: 600px;">
+              <h4
+                style="font-size:15px; font-weight:700; color:var(--text-main); margin-bottom:4px; display:flex; align-items:center; gap:8px;">
+                <i data-lucide="navigation" style="width:18px; height:18px; color:var(--primary);"></i> Campus Locations
+              </h4>
+              <p style="font-size:12.5px; color:var(--text-muted); margin-bottom:12px;">Manage common locations
+                available in search parameters and submission forms.</p>
+
+              <div class="settings-tags-container" id="settings-locations-list"
+                style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom:16px;">
+                <!-- Dynamically loaded pills -->
+              </div>
+              <div style="display:flex; gap:8px; max-width:400px;">
+                <input type="text" id="set-new-location" class="form-control" placeholder="Add new location..."
+                  style="height:36px;">
+                <button class="btn admin-table-action-btn-navy-solid" onclick="addSettingLocation()"
+                  style="height:36px; width:auto; padding:0 16px; font-size:13px; white-space:nowrap; border-radius:6px; cursor:pointer;">Add
+                  Location</button>
+              </div>
+            </div>
+
+            <hr style="margin:24px 0; border:none; border-top:1px solid var(--border-color);">
+
+            <!-- SECTION 4: Officer Profile -->
+            <div style="margin-bottom:32px; max-width: 600px;">
+              <h4
+                style="font-size:15px; font-weight:700; color:var(--text-main); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+                <i data-lucide="user" style="width:18px; height:18px; color:var(--primary);"></i> Officer Profile
+              </h4>
+              <div class="form-group" style="max-width:400px;">
+                <label for="set-officer-name">Officer Name</label>
+                <input type="text" id="set-officer-name" class="form-control" placeholder="e.g. Dahlan">
+              </div>
+              <div class="form-group" style="max-width:400px;">
+                <label for="set-officer-role">Role</label>
+                <input type="text" id="set-officer-role" class="form-control" placeholder="e.g. HEP Officer">
+              </div>
+              <div class="form-group" style="max-width:400px;">
+                <label for="set-officer-email">Email</label>
+                <input type="email" id="set-officer-email" class="form-control" placeholder="e.g. hep@ums.edu.my">
+              </div>
+            </div>
+
+            <!-- Save Changes Button (Navy, White, height 40-44px, rounded 10px, left aligned) -->
+            <button class="btn btn-primary" onclick="saveSystemSettings()"
+              style="width:auto; height:42px; border-radius:10px; font-weight:600; font-size:14px; padding:0 28px; cursor:pointer; display:inline-flex; align-items:center; justify-content:center;">
+              Save Changes
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- MATCH SUGGESTION MODAL -->
+  <div class="admin-login-wrapper" id="adm-match-modal"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); z-index:1000; align-items:center; justify-content:center;">
+    <div class="admin-login-card" style="max-width:500px; width:90%; padding:24px; text-align:left;">
+      <h3
+        style="font-size:18px; font-weight:700; color:var(--primary); margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; margin-top:0;">
+        <span>Suggest Item Match</span>
+        <button onclick="closeMatchModal()" style="background:none; border:none; cursor:pointer;"><i data-lucide="x"
+            style="width:20px; height:20px; stroke:var(--text-muted);"></i></button>
+      </h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:16px;">Suggest a verified found item of the same
+        category for the student's lost report.</p>
+
+      <div
+        style="background-color:#F8FAFC; border:1px solid var(--border-color); border-radius:8px; padding:12px; margin-bottom:16px;">
+        <div style="font-size:11px; color:var(--text-muted); font-weight:600; text-transform:uppercase;">Lost Report:
+        </div>
+        <div id="adm-match-lost-name" style="font-weight:700; font-size:14px; margin-top:2px;">Matric Card</div>
+        <div id="adm-match-lost-details" style="font-size:12px; color:var(--text-muted); margin-top:2px;">Category:
+          Matric Card • Location: Lab G</div>
+      </div>
+
+      <div class="form-group">
+        <label for="adm-match-select-item">Select Verified Found Item *</label>
+        <select id="adm-match-select-item" class="form-control">
+          <!-- Loaded dynamically -->
+        </select>
+      </div>
+
+      <div style="margin-top:20px; display:flex; gap:12px;">
+        <button class="btn btn-primary" onclick="submitMatchSuggestion()" style="flex:1;">Send Match Suggestion</button>
+        <button class="btn btn-secondary" onclick="closeMatchModal()" style="flex:1;">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERIFIED ITEM DETAIL MODAL -->
+  <div class="admin-login-wrapper" id="adm-item-detail-modal"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); z-index:1000; align-items:center; justify-content:center;">
+    <div class="admin-login-card" style="width:500px; text-align:left;">
+      <h3
+        style="margin-bottom:16px; border-bottom:1px solid var(--border-color); padding-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size: 16px; font-weight: 700;">
+        <span>Item Details</span>
+        <span id="modal-item-ref" style="font-size:13px; font-weight:600; color:var(--text-muted);">#LF-0000</span>
+      </h3>
+
+      <div
+        style="display:flex; justify-content:center; margin-bottom:16px; background-color:#F8FAFC; border:1px solid var(--border-color); border-radius:8px; overflow:hidden; height:180px; align-items:center; width: 100%;">
+        <img id="modal-item-img" style="max-height:100%; max-width:100%; object-fit:contain;">
+      </div>
+
+      <div class="form-group">
+        <label
+          style="font-size: 12px; font-weight:600; color:var(--text-muted); margin-bottom: 4px; display: block;">Item
+          Name</label>
+        <div id="modal-item-name" style="font-weight:700; font-size:15px; color:var(--text-main);">Item name</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px;">
+        <div>
+          <label
+            style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Category</label>
+          <div id="modal-item-cat" style="font-size:13.5px; font-weight:600; color:var(--text-main);">Category</div>
+        </div>
+        <div>
+          <label
+            style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Status</label>
+          <div id="modal-item-status" style="display:inline-block;">Status</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1.2fr 0.8fr; gap:12px; margin-top:12px;">
+        <div>
+          <label
+            style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Found
+            Location</label>
+          <div id="modal-item-loc" style="font-size:13.5px; color:var(--text-main);">Location</div>
+        </div>
+        <div>
+          <label
+            style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Date
+            Found</label>
+          <div id="modal-item-date" style="font-size:13.5px; color:var(--text-main);">Date</div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:12px;">
+        <label
+          style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Description</label>
+        <div id="modal-item-desc" style="font-size:13px; color:var(--text-main); white-space:pre-wrap;">Description
+        </div>
+      </div>
+
+      <div class="form-group"
+        style="margin-top:12px; background-color:#F8FAFC; padding:10px; border-radius:6px; border:1px solid var(--border-color);">
+        <label
+          style="font-size:11px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:2px;">Intake Log
+          Details</label>
+        <div id="modal-item-log" style="font-size:12px; font-style:italic; color:var(--text-main);">Intake Details</div>
+      </div>
+
+      <div style="margin-top:20px; text-align:right;">
+        <button class="btn btn-secondary" onclick="closeItemDetailModal()"
+          style="width:auto; padding:8px 20px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOST REPORT DETAIL MODAL -->
+  <div class="admin-login-wrapper" id="adm-lost-detail-modal"
+    style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15,23,42,0.6); z-index:1000; align-items:center; justify-content:center;">
+    <div class="admin-login-card" style="width:500px; text-align:left;">
+      <h3
+        style="margin-bottom:16px; border-bottom:1px solid var(--border-color); padding-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size: 16px; font-weight: 700;">
+        <span>Lost Report Details</span>
+        <span id="modal-lost-ref" style="font-size:13px; font-weight:600; color:var(--text-muted);">#LR-0000</span>
+      </h3>
+
+      <div
+        style="display:flex; justify-content:center; margin-bottom:16px; background-color:#F8FAFC; border:1px solid var(--border-color); border-radius:8px; overflow:hidden; height:180px; align-items:center; width: 100%;">
+        <img id="modal-lost-img" style="max-height:100%; max-width:100%; object-fit:contain;">
+      </div>
+
+      <div class="form-group">
+        <label
+          style="font-size: 12px; font-weight:600; color:var(--text-muted); margin-bottom: 4px; display: block;">Item
+          Name</label>
+        <div id="modal-lost-name" style="font-weight:700; font-size:15px; color:var(--text-main);">Item name</div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px;">
+        <div>
+          <label
+            style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Category</label>
+          <div id="modal-lost-cat" style="font-size:13.5px; font-weight:600; color:var(--text-main);">Category</div>
+        </div>
+        <div>
+          <label
+            style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Status</label>
+          <div id="modal-lost-status" style="display:inline-block;">Status</div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1.2fr 0.8fr; gap:12px; margin-top:12px;">
+        <div>
+          <label
+            style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Last
+            Seen Location</label>
+          <div id="modal-lost-loc" style="font-size:13.5px; color:var(--text-main);">Location</div>
+        </div>
+        <div>
+          <label
+            style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Date /
+            Time Lost</label>
+          <div id="modal-lost-datetime" style="font-size:13.5px; color:var(--text-main);">Date</div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:12px;">
+        <label
+          style="font-size:12px; font-weight:600; color:var(--text-muted); display:block; margin-bottom:4px;">Description</label>
+        <div id="modal-lost-desc" style="font-size:13px; color:var(--text-main); white-space:pre-wrap;">Description
+        </div>
+      </div>
+
+      <div style="margin-top:20px; text-align:right;">
+        <button class="btn btn-secondary" onclick="closeLostReportDetailModal()"
+          style="width:auto; padding:8px 20px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Lightbox Modal -->
+  <div id="image-lightbox-modal" class="admin-modal" onclick="closeLightboxModal()" style="display:none; z-index:9999; background-color: rgba(0,0,0,0.85); justify-content:center; align-items:center;">
+    <div style="position:relative; max-width:80%; max-height:80%; display:flex; justify-content:center; align-items:center;" onclick="event.stopPropagation()">
+      <img id="lightbox-modal-img" src="" style="max-width:100%; max-height:85vh; border-radius:12px; border:2px solid rgba(255,255,255,0.2); box-shadow:0 20px 40px rgba(0,0,0,0.8); object-fit:contain;">
+      <button onclick="closeLightboxModal()" style="position:absolute; top:-40px; right:0; color:white; background:none; border:none; font-size:24px; cursor:pointer;" title="Close">
+        <i data-lucide="x"></i>
+      </button>
+    </div>
+  </div>
+
+  <script src="admin.js?v=1.0.9"></script>
+</body>
+
+</html>

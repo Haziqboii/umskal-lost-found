@@ -1,0 +1,247 @@
+{
+  "users": [
+    {
+      "id": "U-DO",
+      "name": "Encik Zul",
+      "email": "do@klisp.gov.my",
+      "phone": "019-8765432",
+      "ic_number": "760512-12-5111",
+      "role": "do",
+      "school_id": null,
+      "password": "password123"
+    },
+    {
+      "id": "U-PPD",
+      "name": "Puan Azimah",
+      "email": "ppd@klisp.gov.my",
+      "phone": "013-8889999",
+      "ic_number": "810214-12-5222",
+      "role": "ppd",
+      "school_id": null,
+      "password": "password123"
+    },
+    {
+      "id": "U-PIC-1",
+      "name": "Cikgu Rosli",
+      "email": "pic@klisp.edu.my",
+      "phone": "012-3456789",
+      "ic_number": "840618-12-5333",
+      "role": "pic",
+      "school_id": "S-01",
+      "password": "password123"
+    },
+    {
+      "id": "U-TCH-1",
+      "name": "Cikgu Aminah",
+      "email": "teacher1@klisp.edu.my",
+      "phone": "014-1112222",
+      "ic_number": "890812-12-5444",
+      "role": "teacher",
+      "school_id": "S-01",
+      "password": "password123"
+    },
+    {
+      "id": "U-TCH-2",
+      "name": "Cikgu Sarah",
+      "email": "teacher2@klisp.edu.my",
+      "phone": "017-3334444",
+      "ic_number": "920315-12-5555",
+      "role": "teacher",
+      "school_id": "S-01",
+      "password": "password123"
+    },
+    {
+      "id": "U-PAR-1",
+      "name": "Encik Haziq",
+      "email": "parent1@gmail.com",
+      "phone": "010-8204841",
+      "ic_number": "831102-12-6111",
+      "role": "parent",
+      "school_id": null,
+      "password": "password123"
+    },
+    {
+      "id": "U-PAR-2",
+      "name": "Puan Siti",
+      "email": "parent2@gmail.com",
+      "phone": "011-2345678",
+      "ic_number": "850410-12-6222",
+      "role": "parent",
+      "school_id": null,
+      "password": "password123"
+    }
+  ],
+  "areas": [
+    {
+      "id": "A-01",
+      "name": "Bingkor",
+      "description": "Bingkor sub-district area, Keningau"
+    },
+    {
+      "id": "A-02",
+      "name": "Apin-Apin",
+      "description": "Apin-Apin district area, northern Keningau"
+    },
+    {
+      "id": "A-03",
+      "name": "Sook",
+      "description": "Sook sub-district area, southern Keningau"
+    }
+  ],
+  "routes": [
+    {
+      "id": "R-01",
+      "name": "Jalan Bingkor Laut",
+      "area_id": "A-01",
+      "description": "Route connecting Bingkor Laut to main town, low-lying near river",
+      "current_status": "Safe",
+      "last_updated_by": "Encik Zul"
+    },
+    {
+      "id": "R-02",
+      "name": "Jalan Apin-Apin Bypass",
+      "area_id": "A-02",
+      "description": "Bypass route near hills, prone to landslips during heavy rain",
+      "current_status": "Safe",
+      "last_updated_by": "Encik Zul"
+    },
+    {
+      "id": "R-03",
+      "name": "Jalan Sook Utama",
+      "area_id": "A-03",
+      "description": "Main connector road, generally high elevation but bridge is weak",
+      "current_status": "Safe",
+      "last_updated_by": "Encik Zul"
+    },
+    {
+      "id": "R-04",
+      "name": "Jalan Bingkor Town Center",
+      "area_id": "A-01",
+      "description": "Urban route through Bingkor center, drainage usually handles normal rain",
+      "current_status": "Safe",
+      "last_updated_by": "Encik Zul"
+    },
+    {
+      "id": "R-05",
+      "name": "Jalan Kampung Baru Bingkor",
+      "area_id": "A-01",
+      "description": "Village connector, dirt road sections, prone to muddy conditions",
+      "current_status": "Safe",
+      "last_updated_by": "Encik Zul"
+    }
+  ],
+  "route_status_log": [
+    {
+      "id": "RL-01",
+      "route_id": "R-01",
+      "old_status": "Safe",
+      "new_status": "Safe",
+      "updated_by": "U-DO",
+      "timestamp": "2026-06-20T16:06:44.584Z",
+      "remarks": "Initial system startup state"
+    }
+  ],
+  "schools": [
+    {
+      "id": "S-01",
+      "name": "SK Bingkor",
+      "area_id": "A-01",
+      "address": "Peti Surat 20, 89007 Keningau, Sabah",
+      "pic_user_id": "U-PIC-1"
+    },
+    {
+      "id": "S-02",
+      "name": "SK Apin-Apin",
+      "area_id": "A-02",
+      "address": "W.D.T. 14, 89009 Keningau, Sabah",
+      "pic_user_id": null
+    }
+  ],
+  "school_routes": [
+    {
+      "id": "SR-01",
+      "school_id": "S-01",
+      "route_id": "R-01"
+    },
+    {
+      "id": "SR-02",
+      "school_id": "S-01",
+      "route_id": "R-04"
+    },
+    {
+      "id": "SR-03",
+      "school_id": "S-01",
+      "route_id": "R-05"
+    },
+    {
+      "id": "SR-04",
+      "school_id": "S-01",
+      "route_id": "R-02"
+    },
+    {
+      "id": "SR-05",
+      "school_id": "S-02",
+      "route_id": "R-02"
+    }
+  ],
+  "classes": [
+    {
+      "id": "C-01",
+      "school_id": "S-01",
+      "name": "Tahun 1 Amanah",
+      "teacher_user_id": "U-TCH-1"
+    },
+    {
+      "id": "C-02",
+      "school_id": "S-01",
+      "name": "Tahun 2 Bestari",
+      "teacher_user_id": "U-TCH-2"
+    }
+  ],
+  "students": [
+    {
+      "id": "ST-01",
+      "name": "Adam bin Haziq",
+      "class_id": "C-01",
+      "school_id": "S-01"
+    },
+    {
+      "id": "ST-02",
+      "name": "Sarah binti Haziq",
+      "class_id": "C-02",
+      "school_id": "S-01"
+    },
+    {
+      "id": "ST-03",
+      "name": "Farhan bin Siti",
+      "class_id": "C-01",
+      "school_id": "S-01"
+    }
+  ],
+  "student_parent_links": [
+    {
+      "id": "SP-01",
+      "student_id": "ST-01",
+      "parent_user_id": "U-PAR-1",
+      "relationship": "Father"
+    },
+    {
+      "id": "SP-02",
+      "student_id": "ST-02",
+      "parent_user_id": "U-PAR-1",
+      "relationship": "Father"
+    },
+    {
+      "id": "SP-03",
+      "student_id": "ST-03",
+      "parent_user_id": "U-PAR-2",
+      "relationship": "Mother"
+    }
+  ],
+  "notifications": [],
+  "pickup_events": [],
+  "parent_responses": [],
+  "student_pickup_status": [],
+  "pickup_verifications": [],
+  "route_issue_reports": []
+}

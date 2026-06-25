@@ -1,0 +1,573 @@
+{
+  "users": [
+    {
+      "id": "U-DO",
+      "name": "Encik Zul",
+      "email": "do@klisp.gov.my",
+      "phone": "019-8765432",
+      "ic_number": "760512-12-5111",
+      "role": "do",
+      "school_id": null,
+      "password": "password123"
+    },
+    {
+      "id": "U-PPD",
+      "name": "Puan Azimah",
+      "email": "ppd@klisp.gov.my",
+      "phone": "013-8889999",
+      "ic_number": "810214-12-5222",
+      "role": "ppd",
+      "school_id": null,
+      "password": "password123"
+    },
+    {
+      "id": "U-PIC-1",
+      "name": "Cikgu Rosli",
+      "email": "pic@klisp.edu.my",
+      "phone": "012-3456789",
+      "ic_number": "840618-12-5333",
+      "role": "pic",
+      "school_id": "S-01",
+      "password": "password123"
+    },
+    {
+      "id": "U-TCH-1",
+      "name": "Cikgu Aminah",
+      "email": "teacher1@klisp.edu.my",
+      "phone": "014-1112222",
+      "ic_number": "890812-12-5444",
+      "role": "teacher",
+      "school_id": "S-01",
+      "password": "password123"
+    },
+    {
+      "id": "U-TCH-2",
+      "name": "Cikgu Sarah",
+      "email": "teacher2@klisp.edu.my",
+      "phone": "017-3334444",
+      "ic_number": "920315-12-5555",
+      "role": "teacher",
+      "school_id": "S-01",
+      "password": "password123"
+    },
+    {
+      "id": "U-PAR-1",
+      "name": "Encik Haziq",
+      "email": "parent1@gmail.com",
+      "phone": "010-8204841",
+      "ic_number": "831102-12-6111",
+      "role": "parent",
+      "school_id": null,
+      "password": "password123"
+    },
+    {
+      "id": "U-PAR-2",
+      "name": "Puan Siti",
+      "email": "parent2@gmail.com",
+      "phone": "011-2345678",
+      "ic_number": "850410-12-6222",
+      "role": "parent",
+      "school_id": null,
+      "password": "password123"
+    }
+  ],
+  "areas": [
+    {
+      "id": "A-01",
+      "name": "Bingkor",
+      "description": "Bingkor sub-district area, Keningau"
+    },
+    {
+      "id": "A-02",
+      "name": "Apin-Apin",
+      "description": "Apin-Apin district area, northern Keningau"
+    },
+    {
+      "id": "A-03",
+      "name": "Sook",
+      "description": "Sook sub-district area, southern Keningau"
+    }
+  ],
+  "routes": [
+    {
+      "id": "R-01",
+      "name": "Jalan Bingkor Laut",
+      "area_id": "A-01",
+      "description": "Route connecting Bingkor Laut to main town, low-lying near river",
+      "current_status": "Closed",
+      "last_updated_by": "Encik Zul"
+    },
+    {
+      "id": "R-02",
+      "name": "Jalan Apin-Apin Bypass",
+      "area_id": "A-02",
+      "description": "Bypass route near hills, prone to landslips during heavy rain",
+      "current_status": "Safe",
+      "last_updated_by": "Encik Zul"
+    },
+    {
+      "id": "R-03",
+      "name": "Jalan Sook Utama",
+      "area_id": "A-03",
+      "description": "Main connector road, generally high elevation but bridge is weak",
+      "current_status": "Safe",
+      "last_updated_by": "Encik Zul"
+    },
+    {
+      "id": "R-04",
+      "name": "Jalan Bingkor Town Center",
+      "area_id": "A-01",
+      "description": "Urban route through Bingkor center, drainage usually handles normal rain",
+      "current_status": "Closed",
+      "last_updated_by": "Encik Zul"
+    },
+    {
+      "id": "R-05",
+      "name": "Jalan Kampung Baru Bingkor",
+      "area_id": "A-01",
+      "description": "Village connector, dirt road sections, prone to muddy conditions",
+      "current_status": "Safe",
+      "last_updated_by": "Encik Zul"
+    }
+  ],
+  "route_status_log": [
+    {
+      "id": "RL-01",
+      "route_id": "R-01",
+      "old_status": "Safe",
+      "new_status": "Safe",
+      "updated_by": "U-DO",
+      "timestamp": "2026-06-20T21:28:39.122Z",
+      "remarks": "Initial system startup state"
+    },
+    {
+      "id": "RL-1781991122714",
+      "route_id": "R-01",
+      "old_status": "Safe",
+      "new_status": "Closed",
+      "updated_by": "Encik Zul",
+      "timestamp": "2026-06-20T21:32:02.714Z",
+      "remarks": ""
+    },
+    {
+      "id": "RL-1781991132502",
+      "route_id": "R-04",
+      "old_status": "Safe",
+      "new_status": "Closed",
+      "updated_by": "Encik Zul",
+      "timestamp": "2026-06-20T21:32:12.502Z",
+      "remarks": ""
+    }
+  ],
+  "schools": [
+    {
+      "id": "S-01",
+      "name": "SK Bingkor",
+      "area_id": "A-01",
+      "address": "Peti Surat 20, 89007 Keningau, Sabah",
+      "pic_user_id": "U-PIC-1"
+    },
+    {
+      "id": "S-02",
+      "name": "SK Apin-Apin",
+      "area_id": "A-02",
+      "address": "W.D.T. 14, 89009 Keningau, Sabah",
+      "pic_user_id": null
+    }
+  ],
+  "school_routes": [
+    {
+      "id": "SR-01",
+      "school_id": "S-01",
+      "route_id": "R-01"
+    },
+    {
+      "id": "SR-02",
+      "school_id": "S-01",
+      "route_id": "R-04"
+    },
+    {
+      "id": "SR-03",
+      "school_id": "S-01",
+      "route_id": "R-05"
+    },
+    {
+      "id": "SR-04",
+      "school_id": "S-01",
+      "route_id": "R-02"
+    },
+    {
+      "id": "SR-05",
+      "school_id": "S-02",
+      "route_id": "R-02"
+    }
+  ],
+  "classes": [
+    {
+      "id": "C-01",
+      "school_id": "S-01",
+      "name": "Tahun 1 Amanah",
+      "teacher_user_id": "U-TCH-1"
+    },
+    {
+      "id": "C-02",
+      "school_id": "S-01",
+      "name": "Tahun 2 Bestari",
+      "teacher_user_id": "U-TCH-2"
+    }
+  ],
+  "students": [
+    {
+      "id": "ST-01",
+      "name": "Adam bin Haziq",
+      "class_id": "C-01",
+      "school_id": "S-01"
+    },
+    {
+      "id": "ST-02",
+      "name": "Sarah binti Haziq",
+      "class_id": "C-02",
+      "school_id": "S-01"
+    },
+    {
+      "id": "ST-03",
+      "name": "Farhan bin Siti",
+      "class_id": "C-01",
+      "school_id": "S-01"
+    }
+  ],
+  "student_parent_links": [
+    {
+      "id": "SP-01",
+      "student_id": "ST-01",
+      "parent_user_id": "U-PAR-1",
+      "relationship": "Father"
+    },
+    {
+      "id": "SP-02",
+      "student_id": "ST-02",
+      "parent_user_id": "U-PAR-1",
+      "relationship": "Father"
+    },
+    {
+      "id": "SP-03",
+      "student_id": "ST-03",
+      "parent_user_id": "U-PAR-2",
+      "relationship": "Mother"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "NT-PPD-1781991083071-U-PPD",
+      "type": "ppd_alert",
+      "recipient_user_id": "U-PPD",
+      "recipient_role": "ppd",
+      "title": "FLOOD RISK ALERT: Bingkor",
+      "message": "District Office has reported flood risk in Bingkor. Remarks: None. Sender: Encik Zul.",
+      "is_read": false,
+      "created_at": "2026-06-20T21:31:23.071Z",
+      "reference_type": "area",
+      "reference_id": "A-01"
+    },
+    {
+      "id": "NT-PIC-1781991229609-U-PIC-1",
+      "type": "school_alert",
+      "recipient_user_id": "U-PIC-1",
+      "recipient_role": "pic",
+      "title": "FLOOD ALERT FROM PPD: SK Bingkor",
+      "message": "PPD alert: Flood risk reported around school service routes. Review route status immediately. Remarks: None. Sender: Puan Azimah.",
+      "is_read": false,
+      "created_at": "2026-06-20T21:33:49.609Z",
+      "reference_type": "school",
+      "reference_id": "S-01"
+    },
+    {
+      "id": "NT-DO-1781991511617-U-DO",
+      "type": "route_issue",
+      "recipient_user_id": "U-DO",
+      "recipient_role": "do",
+      "pickup_event_id": "E-7870",
+      "title": "Parent Route Block Report",
+      "message": "Parent (Encik Haziq) reported block on Jalan Apin-Apin Bypass: \"flooded\"",
+      "is_read": false,
+      "created_at": "2026-06-20T21:38:31.617Z",
+      "reference_type": "route",
+      "reference_id": "R-02"
+    },
+    {
+      "id": "NT-PAR-1782053141218-U-PAR-1",
+      "type": "pickup_notice",
+      "recipient_user_id": "U-PAR-1",
+      "recipient_role": "parent",
+      "pickup_event_id": "E-7870",
+      "title": "CONTROLLED PICKUP DEPLOYED: SK Bingkor",
+      "message": "PICKUP NOTICE: Controlled pickup activated. Instructions: Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.. Please review recommended safe routes before driving.",
+      "is_read": false,
+      "created_at": "2026-06-21T14:45:41.218Z",
+      "reference_type": "pickup_event",
+      "reference_id": "E-7870"
+    },
+    {
+      "id": "NT-PAR-1782053141218-U-PAR-2",
+      "type": "pickup_notice",
+      "recipient_user_id": "U-PAR-2",
+      "recipient_role": "parent",
+      "pickup_event_id": "E-7870",
+      "title": "CONTROLLED PICKUP DEPLOYED: SK Bingkor",
+      "message": "PICKUP NOTICE: Controlled pickup activated. Instructions: Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.. Please review recommended safe routes before driving.",
+      "is_read": false,
+      "created_at": "2026-06-21T14:45:41.218Z",
+      "reference_type": "pickup_event",
+      "reference_id": "E-7870"
+    },
+    {
+      "id": "NT-PAR-1782053647712-U-PAR-1",
+      "type": "pickup_notice",
+      "recipient_user_id": "U-PAR-1",
+      "recipient_role": "parent",
+      "pickup_event_id": "E-7870",
+      "title": "CONTROLLED PICKUP DEPLOYED: SK Bingkor",
+      "message": "PICKUP NOTICE: Controlled pickup activated. Instructions: Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.. Please review recommended safe routes before driving.",
+      "is_read": false,
+      "created_at": "2026-06-21T14:54:07.712Z",
+      "reference_type": "pickup_event",
+      "reference_id": "E-7870"
+    },
+    {
+      "id": "NT-PAR-1782053647712-U-PAR-2",
+      "type": "pickup_notice",
+      "recipient_user_id": "U-PAR-2",
+      "recipient_role": "parent",
+      "pickup_event_id": "E-7870",
+      "title": "CONTROLLED PICKUP DEPLOYED: SK Bingkor",
+      "message": "PICKUP NOTICE: Controlled pickup activated. Instructions: Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.. Please review recommended safe routes before driving.",
+      "is_read": false,
+      "created_at": "2026-06-21T14:54:07.712Z",
+      "reference_type": "pickup_event",
+      "reference_id": "E-7870"
+    },
+    {
+      "id": "NT-PAR-1782053688692-U-PAR-1",
+      "type": "pickup_notice",
+      "recipient_user_id": "U-PAR-1",
+      "recipient_role": "parent",
+      "pickup_event_id": "E-7870",
+      "title": "CONTROLLED PICKUP DEPLOYED: SK Bingkor",
+      "message": "PICKUP NOTICE: Controlled pickup activated. Instructions: Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.. Please review recommended safe routes before driving.",
+      "is_read": false,
+      "created_at": "2026-06-21T14:54:48.692Z",
+      "reference_type": "pickup_event",
+      "reference_id": "E-7870"
+    },
+    {
+      "id": "NT-PAR-1782053688692-U-PAR-2",
+      "type": "pickup_notice",
+      "recipient_user_id": "U-PAR-2",
+      "recipient_role": "parent",
+      "pickup_event_id": "E-7870",
+      "title": "CONTROLLED PICKUP DEPLOYED: SK Bingkor",
+      "message": "PICKUP NOTICE: Controlled pickup activated. Instructions: Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.. Please review recommended safe routes before driving.",
+      "is_read": false,
+      "created_at": "2026-06-21T14:54:48.692Z",
+      "reference_type": "pickup_event",
+      "reference_id": "E-7870"
+    },
+    {
+      "id": "NT-DO-1782053696487-U-DO",
+      "type": "route_issue",
+      "recipient_user_id": "U-DO",
+      "recipient_role": "do",
+      "pickup_event_id": "E-7870",
+      "title": "Parent Route Block Report",
+      "message": "Parent (Encik Haziq) reported block on Unknown Route: \"Water is overflowing the main drain, road is flooded!\"",
+      "is_read": false,
+      "created_at": "2026-06-21T14:54:56.487Z",
+      "reference_type": "route",
+      "reference_id": ""
+    },
+    {
+      "id": "NT-PAR-1782053923524-U-PAR-1",
+      "type": "pickup_notice",
+      "recipient_user_id": "U-PAR-1",
+      "recipient_role": "parent",
+      "pickup_event_id": "E-7870",
+      "title": "CONTROLLED PICKUP DEPLOYED: SK Bingkor",
+      "message": "PICKUP NOTICE: Controlled pickup activated. Instructions: Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.. Please review recommended safe routes before driving.",
+      "is_read": false,
+      "created_at": "2026-06-21T14:58:43.524Z",
+      "reference_type": "pickup_event",
+      "reference_id": "E-7870"
+    },
+    {
+      "id": "NT-PAR-1782053923524-U-PAR-2",
+      "type": "pickup_notice",
+      "recipient_user_id": "U-PAR-2",
+      "recipient_role": "parent",
+      "pickup_event_id": "E-7870",
+      "title": "CONTROLLED PICKUP DEPLOYED: SK Bingkor",
+      "message": "PICKUP NOTICE: Controlled pickup activated. Instructions: Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.. Please review recommended safe routes before driving.",
+      "is_read": false,
+      "created_at": "2026-06-21T14:58:43.524Z",
+      "reference_type": "pickup_event",
+      "reference_id": "E-7870"
+    },
+    {
+      "id": "NT-DO-1782053931304-U-DO",
+      "type": "route_issue",
+      "recipient_user_id": "U-DO",
+      "recipient_role": "do",
+      "pickup_event_id": "E-7870",
+      "title": "Parent Route Block Report",
+      "message": "Parent (Encik Haziq) reported block on Unknown Route: \"Water is overflowing the main drain, road is flooded!\"",
+      "is_read": false,
+      "created_at": "2026-06-21T14:58:51.304Z",
+      "reference_type": "route",
+      "reference_id": ""
+    }
+  ],
+  "pickup_events": [
+    {
+      "id": "E-7870",
+      "school_id": "S-01",
+      "created_by": "Cikgu Rosli",
+      "status": "closed",
+      "started_at": "2026-06-20T21:34:37.870Z",
+      "closed_at": "2026-06-21T14:59:06.772Z",
+      "remarks": "",
+      "pickup_instruction": "Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.",
+      "hold_reason": "",
+      "situation_report_text": null,
+      "situation_report_sent_at": null
+    }
+  ],
+  "parent_responses": [
+    {
+      "id": "PR-1781991382018",
+      "pickup_event_id": "E-7870",
+      "parent_user_id": "U-PAR-1",
+      "response_type": "on_the_way",
+      "selected_route_id": "R-02",
+      "guardian_note": null,
+      "timestamp": "2026-06-20T21:36:22.018Z"
+    },
+    {
+      "id": "PR-1781991659017",
+      "pickup_event_id": "E-7870",
+      "parent_user_id": "U-PAR-1",
+      "response_type": "cannot_come",
+      "selected_route_id": null,
+      "guardian_note": null,
+      "timestamp": "2026-06-20T21:40:59.017Z"
+    },
+    {
+      "id": "PR-1782053652415",
+      "pickup_event_id": "E-7870",
+      "parent_user_id": "U-PAR-1",
+      "response_type": "on_the_way",
+      "selected_route_id": "R-02",
+      "guardian_note": null,
+      "timestamp": "2026-06-21T14:54:12.415Z"
+    },
+    {
+      "id": "PR-1782053693403",
+      "pickup_event_id": "E-7870",
+      "parent_user_id": "U-PAR-1",
+      "response_type": "on_the_way",
+      "selected_route_id": "R-02",
+      "guardian_note": null,
+      "timestamp": "2026-06-21T14:54:53.403Z"
+    },
+    {
+      "id": "PR-1782053928231",
+      "pickup_event_id": "E-7870",
+      "parent_user_id": "U-PAR-1",
+      "response_type": "on_the_way",
+      "selected_route_id": "R-02",
+      "guardian_note": null,
+      "timestamp": "2026-06-21T14:58:48.231Z"
+    }
+  ],
+  "student_pickup_status": [
+    {
+      "id": "SPS-1781991277870-ST-01",
+      "pickup_event_id": "E-7870",
+      "student_id": "ST-01",
+      "status": "Picked Up",
+      "issue_sub_reason": null,
+      "updated_by": "U-TCH-1",
+      "timestamp": "2026-06-21T14:58:59.537Z"
+    },
+    {
+      "id": "SPS-1781991277870-ST-02",
+      "pickup_event_id": "E-7870",
+      "student_id": "ST-02",
+      "status": "Issue",
+      "issue_sub_reason": "Closed Event: Parent contacted — coming later",
+      "updated_by": "Cikgu Rosli",
+      "timestamp": "2026-06-21T14:59:06.772Z"
+    },
+    {
+      "id": "SPS-1781991277870-ST-03",
+      "pickup_event_id": "E-7870",
+      "student_id": "ST-03",
+      "status": "Issue",
+      "issue_sub_reason": "Closed Event: Parent contacted — coming later",
+      "updated_by": "Cikgu Rosli",
+      "timestamp": "2026-06-21T14:59:06.772Z"
+    }
+  ],
+  "pickup_verifications": [
+    {
+      "id": "PV-1781991783188",
+      "pickup_event_id": "E-7870",
+      "student_id": "ST-01",
+      "verified_by_teacher_id": "U-TCH-1",
+      "parent_user_id": null,
+      "guardian_name_if_alternate": null,
+      "timestamp": "2026-06-20T21:43:03.188Z",
+      "remarks": ""
+    },
+    {
+      "id": "PV-1782053939536",
+      "pickup_event_id": "E-7870",
+      "student_id": "ST-01",
+      "verified_by_teacher_id": "U-TCH-1",
+      "parent_user_id": null,
+      "guardian_name_if_alternate": null,
+      "timestamp": "2026-06-21T14:58:59.536Z",
+      "remarks": "Father visually matched IC at gate."
+    }
+  ],
+  "route_issue_reports": [
+    {
+      "id": "RI-1781991511617",
+      "pickup_event_id": "E-7870",
+      "reported_by_user_id": "U-PAR-1",
+      "route_id": "R-02",
+      "description": "flooded",
+      "status": "pending",
+      "reviewed_by": null,
+      "timestamp": "2026-06-20T21:38:31.617Z"
+    },
+    {
+      "id": "RI-1782053696487",
+      "pickup_event_id": "E-7870",
+      "reported_by_user_id": "U-PAR-1",
+      "route_id": "",
+      "description": "Water is overflowing the main drain, road is flooded!",
+      "status": "pending",
+      "reviewed_by": null,
+      "timestamp": "2026-06-21T14:54:56.487Z"
+    },
+    {
+      "id": "RI-1782053931304",
+      "pickup_event_id": "E-7870",
+      "reported_by_user_id": "U-PAR-1",
+      "route_id": "",
+      "description": "Water is overflowing the main drain, road is flooded!",
+      "status": "pending",
+      "reviewed_by": null,
+      "timestamp": "2026-06-21T14:58:51.304Z"
+    }
+  ]
+}

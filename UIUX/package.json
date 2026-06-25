@@ -1,0 +1,12 @@
+{
+  "name": "umskal-lost-found",
+  "version": "1.0.0",
+  "description": "UMSKAL Lost & Found Management System - Interactive Live Prototype",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

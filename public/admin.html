@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-LiSP Staff Portal</title>
+  <link rel="stylesheet" href="admin.css?v=2.0">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="theme-do">
+
+  <!-- ADMIN LOGIN VIEWPORT -->
+  <div class="admin-login-wrapper" id="admin-login-container">
+    <div class="admin-login-card">
+      <div class="brand-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 13c0 5-3.5 7.5-7.66 9.7a1.01 1.01 0 0 1-.68 0C7.5 20.5 4 18 4 13V6a1 1 0 0 1 .76-.97l8-2a1 1 0 0 1 .48 0l8 2A1 1 0 0 1 20 6z"/>
+          <line x1="12" x2="12" y1="8" y2="12"/>
+          <line x1="12" x2="12.01" y1="16" y2="16"/>
+        </svg>
+      </div>
+      <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">K-LiSP Staff Portal</h2>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 24px;">Authorized administrative access only.</p>
+
+      <div class="form-group">
+        <label for="adm-email">Email Address</label>
+        <input type="email" id="adm-email" class="form-control" placeholder="do@klisp.gov.my" value="do@klisp.gov.my">
+      </div>
+      <div class="form-group">
+        <label for="adm-password">Password</label>
+        <input type="password" id="adm-password" class="form-control" placeholder="••••••••" value="password123">
+      </div>
+
+
+      <button class="btn" onclick="adminLogin()" style="width: 100%; justify-content: center; height: 42px;">Log In</button>
+    </div>
+  </div>
+
+  <!-- MAIN STAFF VIEWPORT -->
+  <div class="admin-viewport" id="admin-main-container" style="display:none;">
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar-header">
+        <div class="brand-logo-circle">
+          <i data-lucide="shield-alert" style="width: 20px; height: 20px;"></i>
+        </div>
+        <div class="brand-details">
+          <h3 id="sidebar-role-title">K-LiSP Staff</h3>
+          <span>Sabah School Safety</span>
+        </div>
+      </div>
+
+      <ul class="admin-sidebar-menu">
+        <!-- DO Screens -->
+        <li class="nav-do">
+          <button class="sidebar-item-btn active" id="menu-do-routes" onclick="navigateToStaffScreen('scr-do-routes')">
+            <i data-lucide="map-pinned"></i> Route Status Manager
+          </button>
+        </li>
+        <li class="nav-do">
+          <button class="sidebar-item-btn" id="menu-do-reports-review" onclick="navigateToStaffScreen('scr-do-reports-review')">
+            <i data-lucide="alert-triangle"></i> Parent Block Reports
+          </button>
+        </li>
+        <li class="nav-do">
+          <button class="sidebar-item-btn" id="menu-do-logs" onclick="navigateToStaffScreen('scr-do-logs')">
+            <i data-lucide="history"></i> Status Change Audit
+          </button>
+        </li>
+
+        <!-- PPD Screens -->
+        <li class="nav-ppd" style="display:none;">
+          <button class="sidebar-item-btn" id="menu-ppd-schools" onclick="navigateToStaffScreen('scr-ppd-schools')">
+            <i data-lucide="school"></i> Schools & Route Links
+          </button>
+        </li>
+        <li class="nav-ppd" style="display:none;">
+          <button class="sidebar-item-btn" id="menu-ppd-notify" onclick="navigateToStaffScreen('scr-ppd-notify')">
+            <i data-lucide="bell"></i> Send Area Alert
+          </button>
+        </li>
+
+        <!-- PIC Screens -->
+        <li class="nav-pic" style="display:none;">
+          <button class="sidebar-item-btn" id="menu-pic-events" onclick="navigateToStaffScreen('scr-pic-events')">
+            <i data-lucide="activity"></i> Active Pickup Event
+          </button>
+        </li>
+        <li class="nav-pic" style="display:none;">
+          <button class="sidebar-item-btn" id="menu-pic-classes" onclick="navigateToStaffScreen('scr-pic-classes')">
+            <i data-lucide="users"></i> Class Handover Monitoring
+          </button>
+        </li>
+
+        <!-- Class Teacher Screens -->
+        <li class="nav-teacher" style="display:none;">
+          <button class="sidebar-item-btn" id="menu-teacher-class" onclick="navigateToStaffScreen('scr-teacher-class')">
+            <i data-lucide="sparkles"></i> Handover Verification
+          </button>
+        </li>
+        <li class="nav-teacher" style="display:none;">
+          <button class="sidebar-item-btn" id="menu-teacher-students" onclick="navigateToStaffScreen('scr-teacher-students')">
+            <i data-lucide="users"></i> Manage Class Records
+          </button>
+        </li>
+
+        <!-- General Notifications Log -->
+        <li>
+          <button class="sidebar-item-btn" id="menu-notif-log" onclick="navigateToStaffScreen('scr-notif-log')">
+            <i data-lucide="mail"></i> Inbox Messages
+            <span class="sidebar-badge-count" id="staff-notif-badge" style="display:none;">0</span>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Fast Role Switcher (For Viva Demonstration) -->
+      <div style="padding: 12px; margin: 12px; background:rgba(255,255,255,0.02); border:1px solid var(--border-color); border-radius: 12px;">
+        <span style="font-size:10px; color:var(--text-muted); font-weight:700; text-transform:uppercase; display:block; margin-bottom:8px;">Demonstration Switcher</span>
+        <select id="demo-role-switcher" class="form-control" style="font-size:12px; height:32px; padding:0 8px;" onchange="demoSwitchRole(this.value)">
+          <option value="do">District Office (DO)</option>
+          <option value="ppd">PPD Officer</option>
+          <option value="pic">School PIC (SK Bingkor)</option>
+          <option value="teacher">Class Teacher (Aminah)</option>
+        </select>
+      </div>
+
+      <div class="admin-sidebar-footer">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="text-align: left;">
+            <strong style="font-size: 13px; display: block;" id="footer-user-name">Encik Zul</strong>
+            <span style="font-size: 11px; color: var(--text-muted);" id="footer-user-role">DO Officer</span>
+          </div>
+          <button class="btn btn-secondary" onclick="adminLogout()" style="padding: 6px; border-radius: 50%;">
+            <i data-lucide="log-out" style="width: 16px; height: 16px;"></i>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="admin-main">
+      <div class="admin-topbar">
+        <h1 id="admin-header-title">Route Status Manager</h1>
+        <div style="display: flex; gap: 8px;">
+          <span class="status-badge" style="background: rgba(255,255,255,0.05); color: var(--text-main); text-transform: none; display:inline-flex; align-items:center; gap:6px;">
+            <i data-lucide="map-pin" style="width:12px; height:12px; color:var(--accent);"></i> Keningau, Sabah
+          </span>
+        </div>
+      </div>
+
+      <div class="admin-content-area">
+
+        <!-- ========================================== -->
+        <!-- DO SCREEN: ROUTE STATUS MANAGER -->
+        <!-- ========================================== -->
+        <div class="admin-screen" id="scr-do-routes">
+          <!-- DO Dashboard KPIs -->
+          <div class="admin-grid-kpis">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <h4>Total Routes</h4>
+                <div class="kpi-icon"><i data-lucide="map"></i></div>
+              </div>
+              <div class="kpi-value" id="do-kpi-total-routes">0</div>
+              <div class="kpi-desc">Registered predefined routes</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <h4>Safe Routes</h4>
+                <div class="kpi-icon" style="color:var(--success); background:rgba(16,185,129,0.08);"><i data-lucide="check-circle"></i></div>
+              </div>
+              <div class="kpi-value" id="do-kpi-safe-routes" style="color:var(--success);">0</div>
+              <div class="kpi-desc">Usable / safe options</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <h4>At Risk / Flooded</h4>
+                <div class="kpi-icon" style="color:var(--danger); background:rgba(239,68,68,0.08);"><i data-lucide="alert-triangle"></i></div>
+              </div>
+              <div class="kpi-value" id="do-kpi-risk-routes" style="color:var(--danger);">0</div>
+              <div class="kpi-desc">Caution, Closed, or Flooded</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <h4>Blocked Feedback</h4>
+                <div class="kpi-icon" style="color:var(--warning); background:rgba(217,119,6,0.08);"><i data-lucide="messages-square"></i></div>
+              </div>
+              <div class="kpi-value" id="do-kpi-parent-reports" style="color:var(--warning);">0</div>
+              <div class="kpi-desc">Pending parent blockage reports</div>
+            </div>
+          </div>
+
+          <div class="admin-card-section">
+            <div class="admin-card-header">
+              <h3>Keningau Route Safety Advisory List</h3>
+              <div style="display:flex; gap:10px;">
+                <button class="btn btn-secondary" onclick="openDoRouteModal()" style="border-color:var(--primary); color:var(--primary); font-weight:700;">+ Add Route</button>
+                <button class="btn" onclick="openNotifyPpdModal()">
+                  <i data-lucide="bell"></i> Send Alert to PPD
+                </button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Route ID</th>
+                    <th>Route Name</th>
+                    <th>Sub-District Area</th>
+                    <th>Description</th>
+                    <th>Parent Blocks Reported</th>
+                    <th>Status Recommendation</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="do-routes-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- DO SCREEN: STATUS CHANGE AUDIT LOG -->
+        <div class="admin-screen" id="scr-do-logs" style="display:none;">
+          <div class="admin-card-section">
+            <div class="admin-card-header">
+              <h3>Route Status Update History (Audit Trail)</h3>
+            </div>
+            <div id="do-logs-container">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- DO SCREEN: PARENT BLOCK REPORTS REVIEW -->
+        <div class="admin-screen" id="scr-do-reports-review" style="display:none;">
+          <div class="admin-card-section">
+            <div class="admin-card-header">
+              <h3>Parent-Reported Route Blocks (Emergency Feedback)</h3>
+            </div>
+            <div class="table-container">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Route Name</th>
+                    <th>Area</th>
+                    <th>Reported By</th>
+                    <th>Specific road situation described by Parent</th>
+                    <th>Report Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="do-reports-review-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- PPD SCREEN: SCHOOL RECORDS & ROUTE LINKS -->
+        <!-- ========================================== -->
+        <div class="admin-screen" id="scr-ppd-schools" style="display:none;">
+          <!-- PPD Dashboard KPIs -->
+          <div class="admin-grid-kpis">
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <h4>Total Schools</h4>
+                <div class="kpi-icon"><i data-lucide="school"></i></div>
+              </div>
+              <div class="kpi-value" id="ppd-kpi-schools">0</div>
+              <div class="kpi-desc">Registered primary schools</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <h4>School-Route Links</h4>
+                <div class="kpi-icon"><i data-lucide="link"></i></div>
+              </div>
+              <div class="kpi-value" id="ppd-kpi-links">0</div>
+              <div class="kpi-desc">Predefined route linkages</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <h4>Flooded Areas</h4>
+                <div class="kpi-icon" style="color:var(--danger); background:rgba(239,68,68,0.08);"><i data-lucide="droplet"></i></div>
+              </div>
+              <div class="kpi-value" id="ppd-kpi-floods" style="color:var(--danger);">0</div>
+              <div class="kpi-desc">Areas with safety warnings</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-header">
+                <h4>School PICs Assigned</h4>
+                <div class="kpi-icon" style="color:var(--success); background:rgba(16,185,129,0.08);"><i data-lucide="user-check"></i></div>
+              </div>
+              <div class="kpi-value" id="ppd-kpi-pics" style="color:var(--success);">0</div>
+              <div class="kpi-desc">Assigned coordinators</div>
+            </div>
+          </div>
+
+          <div class="admin-split-grid">
+            <!-- Left Side: Schools list -->
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>Predefined School Directory</h3>
+                <button class="btn btn-secondary" onclick="openAddSchoolModal()">+ Add School</button>
+              </div>
+              <div class="form-group" style="margin: 12px 0 6px 0;">
+                <div style="position: relative;">
+                  <input type="text" id="ppd-school-search-filter" class="form-control" placeholder="Search school by name..." oninput="filterPpdSchoolsLocal(this.value)" style="padding-left: 36px; height: 38px;">
+                  <i data-lucide="search" style="position: absolute; left: 12px; top: 11px; width: 16px; height: 16px; color: var(--text-muted);"></i>
+                </div>
+              </div>
+              <div class="table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>School Name</th>
+                      <th>Location Area</th>
+                      <th>PIC Assigned</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ppd-schools-tbody">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Right Side: School Predefined Route assignment links -->
+            <div class="admin-card-section" id="ppd-route-assignment-section" style="opacity: 0.6; pointer-events: none;">
+              <div class="admin-card-header">
+                <h3 id="ppd-selected-school-title">Predefined Route Links (Select School)</h3>
+                <button class="btn" id="ppd-btn-assign-route" onclick="openAssignRouteModal()">Assign Route</button>
+              </div>
+              <div class="table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Route Name</th>
+                      <th>Route Area</th>
+                      <th>Default Safety Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ppd-assigned-routes-tbody">
+                    <tr><td colspan="4" style="text-align:center; color:var(--text-muted);">Please select a school to see predefined parent pickup routes.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PPD SCREEN: SEND AREA ALERT -->
+        <div class="admin-screen" id="scr-ppd-notify" style="display:none;">
+          <div class="admin-split-grid">
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>Area-Based School Alert Dispatches</h3>
+              </div>
+              
+              <div class="form-group">
+                <label for="ppd-search-area">Search Affected Sub-District Area</label>
+                <select id="ppd-search-area" class="form-control" onchange="ppdSearchSchools()">
+                  <!-- Prepopulated -->
+                </select>
+              </div>
+
+              <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.4; padding: 10px; background: rgba(255,255,255,0.02); border-radius: 8px; border: 1px dashed var(--border-color);">
+                <strong>Safety Logic (PPD Search):</strong> Finding schools using dual conditions:<br>
+                1. Schools geographically located in the affected area.<br>
+                2. Schools that use parent pickup routes traversing the affected area.
+              </div>
+
+              <div class="form-group">
+                <label>Schools to Notify (Select All that Apply)</label>
+                <div id="ppd-matched-schools-list" style="max-height: 250px; overflow-y: auto; background: rgba(2,6,17,0.5); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px;">
+                  <!-- Checkboxes populated here -->
+                  <p style="color:var(--text-muted); font-size:13px; margin:0;">Search an area to find schools.</p>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="ppd-alert-remarks">Safety Instructions / Notes to School PIC</label>
+                <textarea id="ppd-alert-remarks" class="form-control" placeholder="E.g., Surrounding roads are flooding, place parents on standby advisory." style="height: 80px; resize:none;"></textarea>
+              </div>
+
+              <button class="btn" style="width: 100%; justify-content: center; height: 42px;" onclick="ppdSendAlertNotice()">Dispatch Notifications to PICs</button>
+            </div>
+            
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>School Event Situation Awareness</h3>
+              </div>
+              <div class="status-desc-strip" style="background:rgba(255,255,255,0.02); color:var(--text-main); font-size:13px; margin-bottom:16px;">
+                Shows recent situation reports from School PICs that have placed their pickup on HOLD.
+              </div>
+              <div id="ppd-sit-reports-feed" style="display:flex; flex-direction:column; gap:10px;">
+                <!-- Feed -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- SCHOOL PIC SCREEN: EVENT CONTROLS -->
+        <!-- ========================================== -->
+        <div class="admin-screen" id="scr-pic-events" style="display:none;">
+          <div class="admin-split-grid">
+            <!-- Left Side: Event Controller -->
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>Controlled Pickup Coordinator</h3>
+              </div>
+
+              <!-- State: Non-active -->
+              <div id="pic-event-none-block">
+                <div class="status-desc-strip" style="background: rgba(255,255,255,0.02); color: var(--text-muted); font-size:13.5px; border:none; margin-bottom:20px; line-height:1.5;">
+                  There is currently no active flood pickup event. Use the options below to coordinate parent dismissal actions.
+                </div>
+
+                <div class="form-group">
+                  <label>Emergency Action Decision</label>
+                  <div style="display:flex; gap:12px;">
+                    <button class="btn" style="flex:1; background:var(--success); color:#0F172A;" onclick="togglePicActionSelect('activate')">
+                      <i data-lucide="play-circle"></i> Activate Controlled Pickup
+                    </button>
+                    <button class="btn btn-danger" style="flex:1; background:var(--warning); color:#0f172a;" onclick="togglePicActionSelect('hold')">
+                      <i data-lucide="pause-circle"></i> Hold Student Pickup
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Toggle block for activate instructions -->
+                <div class="form-group" id="pic-action-activate-block" style="display:none;">
+                  <label for="pic-pickup-instr">Controlled Pickup Gate / Location Instructions</label>
+                  <input type="text" id="pic-pickup-instr" class="form-control" placeholder="E.g., Wait at Main Gate. Show parent IC to Cikgu at gate." value="Assemble at Block A Multi-purpose Hall. Have parent IC ready for visual check.">
+                  <button class="btn" style="width:100%; margin-top:14px; justify-content:center;" onclick="picCreateEvent('activate')">Deploy Event & Broadcast</button>
+                </div>
+
+                <!-- Toggle block for hold instructions -->
+                <div class="form-group" id="pic-action-hold-block" style="display:none;">
+                  <label for="pic-hold-reason">Reason to Postpone / Hold Pickup</label>
+                  <input type="text" id="pic-hold-reason" class="form-control" placeholder="E.g., School grounds are flooding. Predefined routes closed." value="School driveway flooded. Access is currently closed for safety.">
+                  <button class="btn btn-danger" style="width:100%; margin-top:14px; justify-content:center; background:var(--warning); color:#0f172a;" onclick="picCreateEvent('hold')">Postpone Pickup & Hold Parents</button>
+                </div>
+              </div>
+
+              <!-- State: Active / Hold -->
+              <div id="pic-event-active-block" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+                  <span style="font-size:13px; font-weight:700; color:var(--text-muted);">CURRENT STATUS:</span>
+                  <span class="status-badge" id="pic-event-status-badge">ACTIVE</span>
+                </div>
+
+                <div id="pic-event-details-status" class="status-desc-strip" style="line-height:1.5; font-size:13px;">
+                  <!-- Details -->
+                </div>
+
+                <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
+                  <button class="btn" id="pic-btn-notify-parents" onclick="picNotifyParentsBroadcast()" style="justify-content:center;">
+                    <i data-lucide="bell"></i> Notify All Parents
+                  </button>
+                  
+                  <div id="pic-held-report-input-block" style="display:none; border:1px dashed var(--border-color); padding:12px; border-radius:12px;">
+                    <div class="form-group" style="margin-bottom:10px;">
+                      <label for="pic-situation-report-text">Update PPD Situation Report</label>
+                      <textarea id="pic-situation-report-text" class="form-control" placeholder="Explain the ground status of the school for PPD awareness..." style="height:60px; resize:none; font-size:13px;"></textarea>
+                    </div>
+                    <button class="btn btn-secondary" style="width:100%; justify-content:center; height:34px; font-size:12px;" onclick="picSendSituationReport()">Send Report to PPD</button>
+                  </div>
+
+                  <!-- Change Hold state back to Active Controlled Pickup -->
+                  <button class="btn" id="pic-btn-switch-to-active" onclick="picSwitchHoldToActive()" style="display:none; background:var(--success); color:#0F172A; justify-content:center;">
+                    Switch to Activate Controlled Pickup
+                  </button>
+
+                  <button class="btn btn-danger" onclick="openCloseEventModal()" style="justify-content:center;">
+                    <i data-lucide="check-square"></i> Close Pickup Event
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: Monitoring progress charts/table -->
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>Live School Pickup Progress Panel</h3>
+              </div>
+              <div class="table-container">
+                <table class="admin-table" style="font-size: 13px;">
+                  <thead>
+                    <tr>
+                      <th>Class Name</th>
+                      <th>Teacher Name</th>
+                      <th>Total Kids</th>
+                      <th>Supervised</th>
+                      <th>Notified</th>
+                      <th>On The Way</th>
+                      <th>Ready</th>
+                      <th>Picked Up</th>
+                      <th>Issue</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pic-monitoring-tbody">
+                    <!-- Progress list -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PIC SCREEN: EVENT SUMMARY REPORT -->
+        <div class="admin-screen" id="scr-pic-classes" style="display:none;">
+          <div class="admin-card-section" style="max-width:800px; margin:0 auto;">
+            <div class="admin-card-header" style="justify-content:space-between;">
+              <h3>Controlled Dismissal Evaluation Report</h3>
+              <button class="btn btn-secondary" onclick="window.print()"><i data-lucide="printer"></i> Export PDF</button>
+            </div>
+            
+            <div id="pic-report-data-block">
+              <!-- Dynamically rendered statistics -->
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- TEACHER SCREEN: HANDOVER VERIFICATION -->
+        <!-- ========================================== -->
+        <div class="admin-screen" id="scr-teacher-class" style="display:none;">
+          <div class="verification-split-panel">
+            
+            <!-- Left student picker -->
+            <div class="verification-list-panel">
+              <h3 style="font-size: 14px; font-weight:700; margin-bottom:10px;">Students in my class</h3>
+              
+              <div class="form-group" style="margin-bottom:10px;">
+                <select id="teacher-filter-status" class="form-control" style="font-size:12px; height:34px; padding:0 8px;" onchange="teacherFilterStudents(this.value)">
+                  <option value="">All Students</option>
+                  <option value="Supervised">Supervised</option>
+                  <option value="Notified">Pickup Notified</option>
+                  <option value="On The Way">Parent On The Way</option>
+                  <option value="Ready">Ready for Pickup</option>
+                  <option value="Picked Up">Handed Over (Picked Up)</option>
+                  <option value="Issue">Flagged Issues</option>
+                </select>
+              </div>
+
+              <!-- Bulk updates bar -->
+              <div style="display:flex; justify-content:space-between; align-items:center; padding:6px; background:rgba(255,255,255,0.02); border-radius:8px; border:1px solid var(--border-color); margin-bottom:10px;">
+                <span style="font-size:11px; font-weight:700; color:var(--text-muted);">BULK SELECT:</span>
+                <button class="btn btn-secondary" style="padding:4px 10px; font-size:11px; border-radius:6px;" onclick="teacherBulkMarkReady()">Mark as Ready</button>
+              </div>
+
+              <div class="verification-list-scroll" id="teacher-student-scroll">
+                <!-- Rendered dynamically -->
+              </div>
+            </div>
+
+            <!-- Right verification workspace -->
+            <div class="verification-action-pane" id="teacher-verification-details-panel" style="display:none;">
+              <!-- Student verification details -->
+            </div>
+
+          </div>
+        </div>
+
+        <!-- TEACHER SCREEN: MANAGE CLASS RECORDS (CRUD) -->
+        <div class="admin-screen" id="scr-teacher-students" style="display:none;">
+          <div class="admin-split-grid">
+            <!-- Students lists -->
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>Class Student Roster</h3>
+                <button class="btn btn-secondary" onclick="openAddStudentModal()">+ Register Student</button>
+              </div>
+              <div class="table-container">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>Student ID</th>
+                      <th>Name</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="teacher-students-tbody">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Parents & Links -->
+            <div class="admin-card-section">
+              <div class="admin-card-header">
+                <h3>Registered Parents & Relationships</h3>
+                <button class="btn btn-secondary" onclick="openAddParentModal()">+ Add Parent Account</button>
+              </div>
+              
+              <div class="table-container" style="margin-bottom:24px;">
+                <table class="admin-table" style="font-size:13px;">
+                  <thead>
+                    <tr>
+                      <th>Parent Name</th>
+                      <th>IC Number</th>
+                      <th>Phone</th>
+                      <th>Email</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="teacher-parents-tbody">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="admin-card-header">
+                <h3>Student-Parent Linking Junction</h3>
+                <button class="btn" onclick="openLinkParentModal()">Link Parent to Kid</button>
+              </div>
+              <div class="table-container">
+                <table class="admin-table" style="font-size:13px;">
+                  <thead>
+                    <tr>
+                      <th>Student Name</th>
+                      <th>Parent Name</th>
+                      <th>Relationship</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody id="teacher-links-tbody">
+                    <!-- Dynamic -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ========================================== -->
+        <!-- GENERAL SCREEN: INBOX NOTIFICATIONS LOG -->
+        <!-- ========================================== -->
+        <div class="admin-screen" id="scr-notif-log" style="display:none;">
+          <div class="admin-card-section" style="max-width:800px; margin:0 auto;">
+            <div class="admin-card-header" style="justify-content:space-between;">
+              <h3>Staff Alerts & Inbox Message Feeds</h3>
+              <button class="btn btn-secondary" onclick="markAllStaffNotificationsAsRead()">Clear All Unread</button>
+            </div>
+            <div id="staff-notifications-feed" style="display:flex; flex-direction:column; gap:12px; margin-top:20px;">
+              <!-- Dynamic notifications -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL DIALOGS -->
+  <!-- ========================================== -->
+
+  <!-- DO MODAL: NOTIFY PPD -->
+  <div class="admin-modal-overlay" id="modal-do-notify-ppd">
+    <div class="admin-modal-card">
+      <h3>Notify PPD of Flood Risk</h3>
+      <div class="form-group">
+        <label for="do-alert-area">Affected Area</label>
+        <select id="do-alert-area" class="form-control">
+          <option value="A-01">Bingkor</option>
+          <option value="A-02">Apin-Apin</option>
+          <option value="A-03">Sook</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="do-alert-remarks">General Observations / Notes</label>
+        <textarea id="do-alert-remarks" class="form-control" placeholder="E.g. Heavy rain since morning, river level rising near Bingkor Laut." style="height: 100px; resize:none;"></textarea>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeDoNotifyPpdModal()" style="flex:1;">Cancel</button>
+        <button class="btn" onclick="doNotifyPpdSubmit()" style="flex:1;">Send Alert</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PPD MODAL: ADD SCHOOL -->
+  <div class="admin-modal-overlay" id="modal-ppd-add-school">
+    <div class="admin-modal-card">
+      <h3>Register School Profile</h3>
+      <div class="form-group">
+        <label for="ppd-school-name">School Name</label>
+        <input type="text" id="ppd-school-name" class="form-control" placeholder="E.g., SK Bingkor">
+      </div>
+      <div class="form-group">
+        <label for="ppd-school-area">Sub-District Location</label>
+        <select id="ppd-school-area" class="form-control">
+          <option value="A-01">Bingkor</option>
+          <option value="A-02">Apin-Apin</option>
+          <option value="A-03">Sook</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="ppd-school-address">Address Details</label>
+        <input type="text" id="ppd-school-address" class="form-control" placeholder="Peti Surat 20, Keningau">
+      </div>
+      <div class="form-group" id="ppd-school-pic-group" style="display:none;">
+        <label for="ppd-school-pic">School PIC Assign</label>
+        <select id="ppd-school-pic" class="form-control">
+          <!-- Populated -->
+        </select>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeAddSchoolModal()" style="flex:1;">Cancel</button>
+        <button class="btn" onclick="ppdSaveSchoolSubmit()" style="flex:1;">Save School</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PPD MODAL: ASSIGN PREDEFINED ROUTE -->
+  <div class="admin-modal-overlay" id="modal-ppd-assign-route">
+    <div class="admin-modal-card">
+      <h3>Predefined Route Linkage</h3>
+      <div class="form-group">
+        <label for="ppd-assign-select-route">Select Predefined Route</label>
+        <select id="ppd-assign-select-route" class="form-control">
+          <!-- Populated dynamically with routes NOT already assigned -->
+        </select>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeAssignRouteModal()" style="flex:1;">Cancel</button>
+        <button class="btn" onclick="ppdAssignRouteSubmit()" style="flex:1;">Link Route</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIC MODAL: EVENT CLOSE RESOLUTIONS CHECK -->
+  <div class="admin-modal-overlay" id="modal-pic-close-event">
+    <div class="admin-modal-card" style="max-width: 600px;">
+      <h3>Event Closure Unresolved Children Check</h3>
+      <div class="status-desc-strip" style="background:rgba(239, 68, 68, 0.05); color:#FCA5A5; font-size:12.5px; margin-bottom:16px;">
+        <i data-lucide="alert-octagon" style="display:inline-block; width:13px; height:13px; vertical-align:middle; margin-right:4px;"></i>
+        Every student must be accounted for before closing the event. Review the unresolved roster below and select resolution actions.
+      </div>
+      
+      <div style="max-height: 250px; overflow-y:auto; margin-bottom:20px; border:1px solid var(--border-color); border-radius:12px; padding:12px;" id="pic-unresolved-checklist-container">
+        <!-- Roster of children with options -->
+      </div>
+
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeCloseEventModal()" style="flex:1;">Cancel</button>
+        <button class="btn btn-danger" onclick="picCloseEventSubmit()" style="flex:1;">Confirm Resolutions & Close Event</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER MODAL: ADD STUDENT -->
+  <div class="admin-modal-overlay" id="modal-teacher-add-student">
+    <div class="admin-modal-card">
+      <h3>Register Student</h3>
+      <div class="form-group">
+        <label for="teacher-student-name">Student Full Name</label>
+        <input type="text" id="teacher-student-name" class="form-control" placeholder="E.g., Adam bin Haziq">
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeAddStudentModal()" style="flex:1;">Cancel</button>
+        <button class="btn" onclick="teacherSaveStudentSubmit()" style="flex:1;">Save Student</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER MODAL: ADD PARENT -->
+  <div class="admin-modal-overlay" id="modal-teacher-add-parent">
+    <div class="admin-modal-card">
+      <h3>Register Parent Account</h3>
+      <div class="form-group">
+        <label for="teacher-parent-name">Parent Full Name</label>
+        <input type="text" id="teacher-parent-name" class="form-control" placeholder="E.g., Encik Haziq">
+      </div>
+      <div class="form-group">
+        <label for="teacher-parent-ic">IC Number</label>
+        <input type="text" id="teacher-parent-ic" class="form-control" placeholder="E.g., 831102-12-6111">
+      </div>
+      <div class="form-group">
+        <label for="teacher-parent-phone">Phone Contact</label>
+        <input type="text" id="teacher-parent-phone" class="form-control" placeholder="E.g., 010-8204841">
+      </div>
+      <div class="form-group">
+        <label for="teacher-parent-email">Email Address</label>
+        <input type="email" id="teacher-parent-email" class="form-control" placeholder="E.g., parent@gmail.com">
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeAddParentModal()" style="flex:1;">Cancel</button>
+        <button class="btn" onclick="teacherSaveParentSubmit()" style="flex:1;">Save Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER MODAL: LINK STUDENT-PARENT -->
+  <div class="admin-modal-overlay" id="modal-teacher-link-parent">
+    <div class="admin-modal-card">
+      <h3>Student Parent Association</h3>
+      <div class="form-group">
+        <label for="teacher-link-select-student">Select Student</label>
+        <select id="teacher-link-select-student" class="form-control">
+          <!-- Populated -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="teacher-link-select-parent">Select Parent</label>
+        <select id="teacher-link-select-parent" class="form-control">
+          <!-- Populated -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="teacher-link-relationship">Relationship</label>
+        <select id="teacher-link-relationship" class="form-control">
+          <option value="Father">Father</option>
+          <option value="Mother">Mother</option>
+          <option value="Guardian">Guardian</option>
+          <option value="Uncle/Aunt">Uncle/Aunt</option>
+        </select>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeLinkParentModal()" style="flex:1;">Cancel</button>
+        <button class="btn" onclick="teacherLinkParentSubmit()" style="flex:1;">Link Records</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DO MODAL: ADD/EDIT ROUTE -->
+  <div class="admin-modal-overlay" id="modal-do-route-crud">
+    <div class="admin-modal-card">
+      <h3 id="do-route-modal-title">Register Predefined Route</h3>
+      <input type="hidden" id="do-route-id-input">
+      <div class="form-group">
+        <label for="do-route-name-input">Route Name</label>
+        <input type="text" id="do-route-name-input" class="form-control" placeholder="E.g., Jalan Bingkor Baru">
+      </div>
+      <div class="form-group">
+        <label for="do-route-area-select">Sub-District Location</label>
+        <select id="do-route-area-select" class="form-control">
+          <option value="A-01">Bingkor</option>
+          <option value="A-02">Apin-Apin</option>
+          <option value="A-03">Sook</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="do-route-desc-input">Description / Notes</label>
+        <textarea id="do-route-desc-input" class="form-control" placeholder="Describe critical details or flood advisory guidelines..." style="height: 80px; resize:none;"></textarea>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeDoRouteModal()" style="flex:1;">Cancel</button>
+        <button class="btn" onclick="submitDoRouteForm()" style="flex:1;">Save Route</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DO MODAL: REVIEW ROAD BLOCK REPORT -->
+  <div class="admin-modal-overlay" id="modal-do-review-report">
+    <div class="admin-modal-card">
+      <h3>Review Parent Block Report</h3>
+      <input type="hidden" id="do-review-report-id">
+      
+      <div style="background: rgba(0,0,0,0.02); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 16px; font-size:13px; text-align: left;">
+        <p style="margin: 0 0 6px 0;"><strong>Route:</strong> <span id="do-review-route-name">Jalan Bingkor Laut</span></p>
+        <p style="margin: 0 0 6px 0;"><strong>Parent:</strong> <span id="do-review-parent-name">Encik Haziq</span></p>
+        <p style="margin: 0;"><strong>Observations:</strong> <span id="do-review-description">Water is knee-deep</span></p>
+      </div>
+
+      <div class="form-group">
+        <label for="do-review-remarks">DO Action Remarks / Notes</label>
+        <textarea id="do-review-remarks" class="form-control" placeholder="E.g., Verified block. Status updated on route advisory to 'Caution'." style="height: 100px; resize:none;"></textarea>
+      </div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn btn-secondary" onclick="closeDoReviewModal()" style="flex:1;">Cancel</button>
+        <button class="btn" onclick="submitDoReviewReport()" style="flex:1;">Mark Reviewed</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js?v=2.0"></script>
+</body>
+</html>
