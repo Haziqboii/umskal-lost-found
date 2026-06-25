@@ -49,7 +49,7 @@ const DEFAULT_STATE = {
       location: "Library Lobby",
       date: "2026-06-24",
       time: "10:30",
-      image: "seed_matric.png",
+      image: SVG_MOCKS.matric,
       status: "Available for Claim",
       description: "Found on a table near the main entrance."
     },
@@ -61,7 +61,7 @@ const DEFAULT_STATE = {
       location: "Cafeteria",
       date: "2026-06-23",
       time: "14:15",
-      image: "seed_wallet.png",
+      image: SVG_MOCKS.wallet,
       status: "Available for Claim",
       description: "Brown leather wallet found on a dining table."
     },
@@ -73,7 +73,7 @@ const DEFAULT_STATE = {
       location: "DK 3",
       date: "2026-06-25",
       time: "09:00",
-      image: "seed_bottle.png",
+      image: SVG_MOCKS.bottle,
       status: "Available for Claim",
       description: "Black vacuum flask left under a seat in Lecture Hall 3."
     },
@@ -85,7 +85,7 @@ const DEFAULT_STATE = {
       location: "Campus Mosque",
       date: "2026-06-22",
       time: "17:45",
-      image: "seed_keys.png",
+      image: SVG_MOCKS.keys,
       status: "Claim Pending",
       description: "Key ring with a car key and a decorative strap."
     }
@@ -99,7 +99,7 @@ const DEFAULT_STATE = {
       date: "2026-06-23",
       time: "14:00",
       description: "Brown leather wallet containing some cash and driving license.",
-      image: "seed_wallet.png",
+      image: SVG_MOCKS.wallet,
       status: "Possible Match Found",
       matchedItemId: "LF-1002"
     },
@@ -111,7 +111,7 @@ const DEFAULT_STATE = {
       date: "2026-06-24",
       time: "11:30",
       description: "Midnight blue iPhone with a transparent case.",
-      image: "seed_phone.png",
+      image: SVG_MOCKS.electronics,
       status: "Submitted"
     },
     {
@@ -122,7 +122,7 @@ const DEFAULT_STATE = {
       date: "2026-06-24",
       time: "10:00",
       description: "Matric card with name Muhammad Haziq Hazim.",
-      image: "seed_matric.png",
+      image: SVG_MOCKS.matric,
       status: "Returned"
     }
   ],
@@ -138,7 +138,7 @@ const DEFAULT_STATE = {
       finderName: "Muhammad Haziq Hazim bin Amir",
       finderEmail: "haxim.2mars@gmail.com",
       description: "Black backpack containing notebook and stationary.",
-      image: "seed_backpack.png",
+      image: SVG_MOCKS.bag,
       status: "Submitted"
     },
     {
@@ -152,7 +152,7 @@ const DEFAULT_STATE = {
       finderName: "Aiman bin Abdullah",
       finderEmail: "aiman_student@student.ums.edu.my",
       description: "iPhone found near computer desk.",
-      image: "seed_phone.png",
+      image: SVG_MOCKS.electronics,
       status: "Under Review"
     }
   ],
@@ -169,7 +169,7 @@ const DEFAULT_STATE = {
       lostDate: "2026-06-22",
       lostTime: "17:30",
       uniqueDetail: "A black leather strap with a Toyota logo on the key ring.",
-      proofImage: "seed_keys.png",
+      proofImage: SVG_MOCKS.keys,
       status: "Claim Pending"
     }
   ],
