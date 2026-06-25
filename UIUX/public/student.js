@@ -166,12 +166,12 @@ function getDisplayName(fullName) {
 }
 
 function initUserSession() {
-  const seedKey = "db_seed_reset_haxim_v5";
+  const seedKey = "db_seed_reset_haxim_v6";
   if (localStorage.getItem(seedKey) !== "true") {
     // Clear custom registered users and set default student user
     localStorage.setItem("studentUsers", JSON.stringify([DEFAULT_USER]));
-    // Set active session to student user by default
-    localStorage.setItem("currentUser", JSON.stringify(DEFAULT_USER));
+    // Clear active session to force login screen first
+    localStorage.removeItem("currentUser");
 
     // Reset admin session and update default settings officer
     sessionStorage.removeItem("adminLogged");
