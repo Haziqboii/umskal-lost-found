@@ -23,9 +23,8 @@ window.onload = function () {
   }
   adminLoginSuccess();
 
-  // Refresher interval (optimized to 15s to reduce server/DB load, only polls when tab is active)
+  // Refresher interval
   setInterval(() => {
-    if (document.hidden) return; 
     if (sessionStorage.getItem("adminLogged") === "true") {
       if (activeAdminScreen === 'adm-scr-dash') renderDashboardSummary();
       else if (activeAdminScreen === 'adm-scr-found-verify') renderFoundQueue();
@@ -34,7 +33,7 @@ window.onload = function () {
       else if (activeAdminScreen === 'adm-scr-records') renderLogs();
       else if (activeAdminScreen === 'adm-scr-logs') renderActivityLogs();
     }
-  }, 15000);
+  }, 5000);
 
   lucide.createIcons();
 };
